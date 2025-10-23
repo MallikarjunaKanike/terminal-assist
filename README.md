@@ -166,34 +166,6 @@ Track usage by checking browser console:
 
 ---
 
-🔄 AUTO-UPDATES:
-• Commands update instantly from GitHub
-• Script updates automatically every 1-2 weeks
-• No manual updates needed!
-
-⌨️ HOW TO USE:
-• Press Ctrl+Shift+D
-• Search for commands
-• Click to copy
-• Paste in terminal
-
-Features:
-✓ 124 commands (Windows, Linux, macOS)
-✓ Auto-updates from GitHub
-✓ Search & filter
-✓ One-click copy
-✓ Auto-close option
-
-Questions? Just ask!
-
-Repository: https://github.com/MallikarjunaKanike/terminal-assist
-
-[Your Name]
-SOC Team
-```
-
----
-
 ## 🔒 Security & Privacy
 
 - ✅ All code is open source and auditable
