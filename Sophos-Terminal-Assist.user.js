@@ -3,7 +3,7 @@
 // @namespace    https://github.com/MallikarjunaKanike/terminal-assist
 // @version      1.0.0
 // @description  Real-time command guide for live terminal sessions | Auto-updates from GitHub
-// @author       Mallikarjuna Kanike - SOC Team
+// @author       Mallikarjuna Kanike
 // @match        https://central.sophos.com/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=sophos.com
 // @updateURL    https://raw.githubusercontent.com/MallikarjunaKanike/terminal-assist/main/Sophos-Terminal-Assist.user.js
