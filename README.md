@@ -166,23 +166,6 @@ Track usage by checking browser console:
 
 ---
 
-## 📧 Share with Your Team
-
-**Email Template:**
-
-```
-Subject: 🖥️ New Tool: Sophos Terminal Assist - Auto-Updates from GitHub!
-
-Hi Team,
-
-We now have an automated forensics command library that updates from GitHub!
-
-📥 INSTALL (2 minutes):
-1. Install Tampermonkey: https://www.tampermonkey.net/
-2. Click: https://raw.githubusercontent.com/MallikarjunaKanike/terminal-assist/main/Sophos-Terminal-Assist.user.js
-3. Click "Install" when prompted
-4. Go to Sophos Central → Click purple 🖥️ button
-
 🔄 AUTO-UPDATES:
 • Commands update instantly from GitHub
 • Script updates automatically every 1-2 weeks
