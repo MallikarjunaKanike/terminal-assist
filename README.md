@@ -234,7 +234,7 @@ MIT License - See [LICENSE](LICENSE) file
 ## 👥 Author
 
 **Mallikarjuna Kanike**  
-SOC Team  
+Senior Threat Analyst 1 
 
 Repository: https://github.com/MallikarjunaKanike/terminal-assist
 
